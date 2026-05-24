@@ -1,0 +1,15 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class ModelKondisi extends Model
+{
+    protected $table = 'kondisi';
+
+    protected $fillable = [
+        'nama_kondisi',
+        'keterangan',
+    ];
+}

@@ -1,0 +1,205 @@
+peminjamanalatmuhammadraihannafis/
+│
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/
+│   │   │
+│   │   │   ├── Auth/
+│   │   │   │   ├── UserAuthController.php
+│   │   │   │   └── PeminjamAuthController.php
+│   │   │   │
+│   │   │   ├── Dashboard/
+│   │   │   │   ├── DashboardController.php
+│   │   │   │   └── PeminjamDashboardController.php
+│   │   │   │
+│   │   │   ├── Master/
+│   │   │   │   ├── UserController.php
+│   │   │   │   ├── PeminjamController.php
+│   │   │   │   ├── KategoriController.php
+│   │   │   │   ├── KondisiController.php
+│   │   │   │   └── AlatController.php
+│   │   │   │
+│   │   │   ├── Transaksi/
+│   │   │   │   ├── PeminjamanController.php
+│   │   │   │   ├── PengembalianController.php
+│   │   │   │   ├── DendaController.php
+│   │   │   │   ├── ApprovalController.php
+│   │   │   │   └── LogActivityController.php
+│   │   │   │
+│   │   │   ├── Laporan/
+│   │   │   │   ├── LaporanController.php
+│   │   │   │   ├── LaporanPeminjamanController.php
+│   │   │   │   ├── LaporanPengembalianController.php
+│   │   │   │   └── LaporanDendaController.php
+│   │   │   │
+│   │   │   ├── Peminjam/
+│   │   │   │   ├── DashboardController.php
+│   │   │   │   └── PeminjamanController.php
+│   │   │   │
+│   │   │   └── Landing/
+│   │   │       └── LandingController.php
+│   │   │
+│   │   └── Middleware/
+│   │       ├── RoleMiddleware.php
+│   │       └── PeminjamMiddleware.php
+│   │
+│   ├── Models/
+│   │   ├── ModelUser.php
+│   │   ├── ModelPeminjam.php
+│   │   ├── ModelKategori.php
+│   │   ├── ModelKondisi.php
+│   │   ├── ModelAlat.php
+│   │   ├── ModelPeminjaman.php
+│   │   ├── ModelPengembalian.php
+│   │   ├── ModelDenda.php
+│   │   └── ModelLogActivity.php
+│   │
+│   └── Services/
+│       ├── PeminjamanService.php
+│       ├── PengembalianService.php
+│       ├── DendaService.php
+│       └── LogActivityService.php
+│
+├── database/
+│   ├── migrations/
+│   │   └── migrasipeminjamanalatmuhammadraihannafis.php
+│   │
+│   └── seeders/
+│       └── seederpeminjamanalatmuhammadraihannafis.php
+│
+├── resources/
+│   ├── views/
+│   │
+│   │   ├── layouts/
+│   │   │
+│   │   │   ├── apptamu.blade.php
+│   │   │   ├── appuser.blade.php
+│   │   │   ├── apppeminjam.blade.php
+│   │   │   │
+│   │   │   ├── tamu/
+│   │   │   │   ├── navbar.blade.php
+│   │   │   │   ├── sidebar.blade.php
+│   │   │   │   └── footer.blade.php
+│   │   │   │
+│   │   │   ├── user/
+│   │   │   │   ├── navbar.blade.php
+│   │   │   │   ├── sidebaradmin.blade.php
+│   │   │   │   ├── sidebarpetugas.blade.php
+│   │   │   │   └── footer.blade.php
+│   │   │   │
+│   │   │   └── peminjam/
+│   │   │       ├── navbar.blade.php
+│   │   │       ├── sidebar.blade.php
+│   │   │       └── footer.blade.php
+│   │   │
+│   │   ├── user/
+│   │   │
+│   │   │   ├── dashboard/
+│   │   │   │   ├── dashboardadmin.blade.php
+│   │   │   │   └── dashboardpetugas.blade.php
+│   │   │   │
+│   │   │   ├── user/
+│   │   │   │   ├── index.blade.php
+│   │   │   │   ├── create.blade.php
+│   │   │   │   ├── edit.blade.php
+│   │   │   │   └── show.blade.php
+│   │   │   │
+│   │   │   ├── kategori/
+│   │   │   │   ├── index.blade.php
+│   │   │   │   ├── create.blade.php
+│   │   │   │   ├── edit.blade.php
+│   │   │   │   └── show.blade.php
+│   │   │   │
+│   │   │   ├── kondisi/
+│   │   │   │   ├── index.blade.php
+│   │   │   │   ├── create.blade.php
+│   │   │   │   ├── edit.blade.php
+│   │   │   │   └── show.blade.php
+│   │   │   │
+│   │   │   ├── peminjam/
+│   │   │   │   ├── index.blade.php
+│   │   │   │   ├── create.blade.php
+│   │   │   │   ├── edit.blade.php
+│   │   │   │   └── show.blade.php
+│   │   │   │
+│   │   │   ├── alat/
+│   │   │   │   ├── index.blade.php
+│   │   │   │   ├── create.blade.php
+│   │   │   │   ├── edit.blade.php
+│   │   │   │   └── show.blade.php
+│   │   │   │
+│   │   │   ├── peminjaman/
+│   │   │   │   ├── index.blade.php
+│   │   │   │   ├── create.blade.php
+│   │   │   │   ├── edit.blade.php
+│   │   │   │   ├── approval.blade.php
+│   │   │   │   └── show.blade.php
+│   │   │   │
+│   │   │   ├── pengembalian/
+│   │   │   │   ├── index.blade.php
+│   │   │   │   ├── create.blade.php
+│   │   │   │   ├── edit.blade.php
+│   │   │   │   └── show.blade.php
+│   │   │   │
+│   │   │   ├── denda/
+│   │   │   │   ├── index.blade.php
+│   │   │   │   ├── create.blade.php
+│   │   │   │   ├── edit.blade.php
+│   │   │   │   └── show.blade.php
+│   │   │   │
+│   │   │   ├── logactivity/
+│   │   │   │   └── index.blade.php
+│   │   │   │
+│   │   │   └── laporan/
+│   │   │       ├── laporanpeminjaman.blade.php
+│   │   │       ├── laporanpengembalian.blade.php
+│   │   │       ├── laporandenda.blade.php
+│   │   │       ├── cetaklaporanpeminjaman.blade.php
+│   │   │       ├── cetaklaporanpengembalian.blade.php
+│   │   │       └── cetaklaporandenda.blade.php
+│   │   │
+│   │   ├── zonaPeminjam/
+│   │   │   ├── dashboard/
+│   │   │   │   └── peminjam.blade.php
+│   │   │   │
+│   │   │   └── peminjaman/
+│   │   │       ├── index.blade.php
+│   │   │       ├── create.blade.php
+│   │   │       ├── edit.blade.php
+│   │   │       └── show.blade.php
+│   │   │
+│   │   ├── landing/
+│   │   │   ├── home.blade.php
+│   │   │   ├── daftarkategori.blade.php
+│   │   │   ├── kategori.blade.php
+│   │   │   ├── tentang.blade.php
+│   │   │   ├── kontak.blade.php
+│   │   │   └── daftaralat.blade.php
+│   │   │
+│   │   ├── auth/
+│   │   │   ├── loginuser.blade.php
+│   │   │   ├── loginpeminjam.blade.php
+│   │   │   └── registerpeminjam.blade.php
+│   │   │
+│   │   └── errors/
+│   │       ├── 403.blade.php
+│   │       ├── 404.blade.php
+│   │       └── 500.blade.php
+│
+├── routes/
+│   └── web.php
+│
+├── public/
+│   ├── dist/
+│   ├── plugins/
+│   │
+│   ├── uploads/
+│   │   ├── user/
+│   │   ├── peminjam/
+│   │   ├── alat/
+│   │   ├── peminjaman/
+│   │   └── pengembalian/
+│   │
+│   └── index.php
+│
+└── .env
