@@ -4,73 +4,106 @@
 
 @section('content')
 
-<div class="content-wrapper">
-
 <section class="content-header">
+
+```
 <div class="container-fluid">
-<h1>Tambah Denda</h1>
+
+    <h1>Tambah Data Denda</h1>
+
 </div>
+```
+
 </section>
 
 <section class="content">
 
+```
 <div class="card">
 
-<div class="card-body">
+    <div class="card-body">
 
-<form action="{{ route('denda.store') }}"
-method="POST">
+        <form action="{{ route('denda.store') }}"
+              method="POST">
 
-@csrf
+            @csrf
 
-<div class="form-group">
-<label>Peminjaman</label>
+            <div class="mb-3">
 
-<select name="peminjaman_id"
-class="form-control">
+                <label>Data Pengembalian</label>
 
-@foreach($peminjaman as $item)
+                <select name="pengembalian_id"
+                        class="form-control"
+                        required>
 
-<option value="{{ $item->id }}">
-{{ $item->user->nama ?? '-' }}
--
-{{ $item->alat->nama_alat ?? '-' }}
-</option>
+                    <option value="">
+                        -- Pilih --
+                    </option>
 
-@endforeach
+                    @foreach($pengembalian as $item)
 
-</select>
+                    <option value="{{ $item->id }}">
+
+                        {{ $item->peminjaman->kode_peminjaman ?? '-' }}
+
+                    </option>
+
+                    @endforeach
+
+                </select>
+
+            </div>
+
+            <div class="mb-3">
+
+                <label>Total Denda</label>
+
+                <input type="number"
+                       name="total_denda"
+                       class="form-control"
+                       required>
+
+            </div>
+
+            <div class="mb-3">
+
+                <label>Status Bayar</label>
+
+                <select name="status_bayar"
+                        class="form-control">
+
+                    <option value="belum_bayar">
+                        Belum Bayar
+                    </option>
+
+                    <option value="sudah_bayar">
+                        Sudah Bayar
+                    </option>
+
+                </select>
+
+            </div>
+
+            <button class="btn btn-success">
+
+                Simpan
+
+            </button>
+
+            <a href="{{ route('denda.index') }}"
+               class="btn btn-secondary">
+
+                Kembali
+
+            </a>
+
+        </form>
+
+    </div>
 
 </div>
-
-<div class="form-group">
-<label>Keterlambatan</label>
-
-<input type="number"
-name="keterlambatan"
-class="form-control">
-</div>
-
-<div class="form-group">
-<label>Denda</label>
-
-<input type="number"
-name="denda"
-class="form-control">
-</div>
-
-<button class="btn btn-primary">
-Simpan
-</button>
-
-</form>
-
-</div>
-
-</div>
+```
 
 </section>
-
-</div>
 
 @endsection

@@ -4,73 +4,157 @@
 
 @section('content')
 
-<div class="content-wrapper">
+
 
     <section class="content-header">
         <div class="container-fluid">
-            <h1>Edit User</h1>
+
+            <h1 class="fw-bold">
+                Edit User
+            </h1>
+
         </div>
     </section>
 
     <section class="content">
 
-        <div class="card">
+        <div class="container-fluid">
 
-            <div class="card-body">
+            <div class="card shadow">
 
-                <form action="{{ route('user.update', $data->id) }}"
-                      method="POST">
+                <div class="card-body">
 
-                    @csrf
-                    @method('PUT')
+                    <form action="{{ route('user.update', $data->id) }}"
+                          method="POST"
+                          enctype="multipart/form-data">
 
-                    <div class="form-group">
-                        <label>Nama</label>
+                        @csrf
+                        @method('PUT')
 
-                        <input type="text"
-                               name="nama"
-                               value="{{ $data->nama }}"
-                               class="form-control">
-                    </div>
+                        <div class="text-center mb-4">
 
-                    <div class="form-group">
-                        <label>Username</label>
+                            @if($data->foto)
 
-                        <input type="text"
-                               name="username"
-                               value="{{ $data->username }}"
-                               class="form-control">
-                    </div>
+                                <img src="{{ asset('storage/' . $data->foto) }}"
+                                     width="120"
+                                     height="120"
+                                     class="rounded-circle border"
+                                     style="object-fit:cover;">
 
-                    <div class="form-group">
-                        <label>Role</label>
+                            @else
 
-                        <select name="role"
-                                class="form-control">
+                                <img src="https://ui-avatars.com/api/?name={{ urlencode($data->nama) }}&background=0D8ABC&color=fff"
+                                     width="120"
+                                     height="120"
+                                     class="rounded-circle border">
 
-                            <option value="admin"
-                                {{ $data->role == 'admin' ? 'selected' : '' }}>
-                                Admin
-                            </option>
+                            @endif
 
-                            <option value="petugas"
-                                {{ $data->role == 'petugas' ? 'selected' : '' }}>
-                                Petugas
-                            </option>
+                        </div>
 
-                            <option value="peminjam"
-                                {{ $data->role == 'peminjam' ? 'selected' : '' }}>
-                                Peminjam
-                            </option>
+                        <div class="mb-3">
 
-                        </select>
-                    </div>
+                            <label class="form-label">
+                                Nama
+                            </label>
 
-                    <button class="btn btn-warning">
-                        Update
-                    </button>
+                            <input type="text"
+                                   name="nama"
+                                   value="{{ $data->nama }}"
+                                   class="form-control"
+                                   required>
 
-                </form>
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Username
+                            </label>
+
+                            <input type="text"
+                                   name="username"
+                                   value="{{ $data->username }}"
+                                   class="form-control"
+                                   required>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Password Baru
+                            </label>
+
+                            <input type="password"
+                                   name="password"
+                                   class="form-control">
+
+                            <small class="text-muted">
+                                Kosongkan jika tidak ingin mengubah password.
+                            </small>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Role
+                            </label>
+
+                            <select name="role"
+                                    class="form-control">
+
+                                <option value="admin"
+                                    {{ $data->role == 'admin' ? 'selected' : '' }}>
+                                    Admin
+                                </option>
+
+                                <option value="petugas"
+                                    {{ $data->role == 'petugas' ? 'selected' : '' }}>
+                                    Petugas
+                                </option>
+
+                                <option value="peminjam"
+                                    {{ $data->role == 'peminjam' ? 'selected' : '' }}>
+                                    Peminjam
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Ganti Foto
+                            </label>
+
+                            <input type="file"
+                                   name="foto"
+                                   class="form-control"
+                                   accept="image/*">
+
+                        </div>
+
+                        <button type="submit"
+                                class="btn btn-warning">
+
+                            <i class="fas fa-save"></i>
+                            Update
+
+                        </button>
+
+                        <a href="{{ route('user.index') }}"
+                           class="btn btn-secondary">
+
+                            Kembali
+
+                        </a>
+
+                    </form>
+
+                </div>
 
             </div>
 

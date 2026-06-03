@@ -1,60 +1,116 @@
-{{-- resources/views/user/laporan/laporanpeminjaman.blade.php --}}
+{{-- resources/views/user/laporan/laporanpengembalian.blade.php --}}
 
 @extends('layouts.appuser')
 
-@section('title', 'Laporan Peminjaman')
+@section('title', 'Laporan Pengembalian')
 
 @section('content')
 
 <div class="card">
 
-    <div class="card-header d-flex justify-content-between">
+    <div class="card-header d-flex justify-content-between align-items-center">
 
-        <h4>Laporan Peminjaman</h4>
+        <div class="d-flex gap-2 align-items-center">
 
-        <a href="/laporan/cetakpeminjaman"
+            <a href="{{ route('laporan.index') }}" class="btn btn-secondary btn-sm">
+                ← Kembali
+            </a>
+
+            <h4 class="mb-0">Laporan Pengembalian</h4>
+
+        </div>
+
+        <a href="/laporan/cetakpengembalian"
            target="_blank"
-           class="btn btn-primary">
+           class="btn btn-primary btn-sm">
 
             Cetak Laporan
-
         </a>
 
     </div>
 
     <div class="card-body">
 
-        <table class="table table-bordered">
+        <div class="table-responsive">
 
-            <thead>
-                <tr>
-                    <th>No</th>
-                    <th>User</th>
-                    <th>Alat</th>
-                    <th>Tanggal Pinjam</th>
-                    <th>Tanggal Kembali</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
+            <table class="table table-bordered table-striped">
 
-            <tbody>
+                <thead class="table-dark">
+                    <tr>
+                        <th>No</th>
+                        <th>User</th>
+                        <th>Alat</th>
+                        <th>Tanggal Pengembalian</th>
+                        <th>Keterlambatan</th>
+                        <th>Denda</th>
+                        <th>Kondisi</th>
+                    </tr>
+                </thead>
 
-                @foreach($data as $item)
+                <tbody>
 
-                <tr>
-                    <td>{{ $loop->iteration }}</td>
-                    <td>{{ $item->user->nama ?? '-' }}</td>
-                    <td>{{ $item->alat->nama_alat ?? '-' }}</td>
-                    <td>{{ $item->tanggal_pinjam }}</td>
-                    <td>{{ $item->tanggal_kembali }}</td>
-                    <td>{{ $item->status }}</td>
-                </tr>
+                    @forelse($data as $item)
 
-                @endforeach
+                        <tr>
 
-            </tbody>
+                            <td>{{ $loop->iteration }}</td>
 
-        </table>
+                            <td>
+                                {{ $item->peminjaman->user->nama ?? '-' }}
+                            </td>
+
+                            <td>
+                                {{ $item->peminjaman->alat->nama_alat ?? '-' }}
+                            </td>
+
+                            <td>
+                                {{ $item->tanggal_pengembalian }}
+                            </td>
+
+                            <td>
+                                {{ $item->keterlambatan }} hari
+                            </td>
+
+                            <td>
+                                Rp {{ number_format($item->denda, 0, ',', '.') }}
+                            </td>
+
+                            <td>
+
+                                @if($item->kondisi_kembali == 'baik')
+                                    <span class="badge bg-success">Baik</span>
+
+                                @elseif($item->kondisi_kembali == 'rusak')
+                                    <span class="badge bg-warning text-dark">Rusak</span>
+
+                                @elseif($item->kondisi_kembali == 'hilang')
+                                    <span class="badge bg-danger">Hilang</span>
+
+                                @else
+                                    <span class="badge bg-secondary">
+                                        {{ $item->kondisi_kembali }}
+                                    </span>
+                                @endif
+
+                            </td>
+
+                        </tr>
+
+                    @empty
+
+                        <tr>
+                            <td colspan="7" class="text-center">
+                                Tidak ada data pengembalian
+                            </td>
+                        </tr>
+
+                    @endforelse
+
+                </tbody>
+
+            </table>
+
+        </div>
 
     </div>
 

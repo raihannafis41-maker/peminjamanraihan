@@ -4,145 +4,144 @@
 
 @section('content')
 
-<div class="content-wrapper">
 
-    <!-- HEADER -->
-    <section class="content-header">
+<!-- HEADER -->
+<section class="content-header">
 
-        <div class="container-fluid">
+    <div class="container-fluid">
 
-            <h1 class="fw-bold">
-                Data Peminjam
-            </h1>
+        <h1 class="fw-bold">
+            Data Peminjam
+        </h1>
 
-        </div>
+    </div>
 
-    </section>
+</section>
 
-    <!-- CONTENT -->
-    <section class="content">
+<!-- CONTENT -->
+<section class="content">
 
-        <div class="container-fluid">
+    <div class="container-fluid">
 
-            <div class="card shadow-sm">
+        <div class="card shadow-sm">
 
-                <div class="card-header">
+            <div class="card-header">
 
-                    <h3 class="card-title">
-                        Daftar Peminjam
-                    </h3>
+                <h3 class="card-title">
+                    Daftar Peminjam
+                </h3>
 
-                </div>
+            </div>
 
-                <div class="card-body">
+            <div class="card-body">
 
-                    <table class="table table-bordered table-striped">
+                <table class="table table-bordered table-striped">
 
-                        <thead>
+                    <thead>
 
-                            <tr>
+                        <tr>
 
-                                <th width="60">No</th>
-                                <th>Nama</th>
-                                <th>Email</th>
-                                <th>Role</th>
-                                <th width="200">Aksi</th>
+                            <th width="60">No</th>
+                            <th>Nama</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th width="200">Aksi</th>
 
-                            </tr>
+                        </tr>
 
-                        </thead>
+                    </thead>
 
-                        <tbody>
+                    <tbody>
 
-                            @forelse($data as $item)
+                        @forelse($data as $item)
 
-                            <tr>
+                        <tr>
 
-                                <td>
-                                    {{ $loop->iteration }}
-                                </td>
+                            <td>
+                                {{ $loop->iteration }}
+                            </td>
 
-                                <td>
-                                    {{ $item->nama }}
-                                </td>
+                            <td>
+                                {{ $item->nama }}
+                            </td>
 
-                                <td>
-                                    {{ $item->email }}
-                                </td>
+                            <td>
+                                {{ $item->email }}
+                            </td>
 
-                                <td>
+                            <td>
 
-                                    <span class="badge bg-success">
+                                <span class="badge bg-success">
 
-                                        {{ $item->role }}
+                                    {{ $item->role }}
 
-                                    </span>
+                                </span>
 
-                                </td>
+                            </td>
 
-                                <td>
+                            <td>
 
-                                    <a href="{{ route('peminjam.show', $item->id) }}"
-                                       class="btn btn-info btn-sm">
+                                <a href="{{ route('peminjam.show', $item->id) }}"
+                                    class="btn btn-info btn-sm">
 
-                                        Detail
+                                    Detail
 
-                                    </a>
+                                </a>
 
-                                    <a href="{{ route('peminjam.edit', $item->id) }}"
-                                       class="btn btn-warning btn-sm">
+                                <a href="{{ route('peminjam.edit', $item->id) }}"
+                                    class="btn btn-warning btn-sm">
 
-                                        Edit
+                                    Edit
 
-                                    </a>
+                                </a>
 
-                                    <form action="{{ route('peminjam.destroy', $item->id) }}"
-                                          method="POST"
-                                          style="display:inline-block;">
+                                <form action="{{ route('peminjam.destroy', $item->id) }}"
+                                    method="POST"
+                                    style="display:inline-block;">
 
-                                        @csrf
-                                        @method('DELETE')
+                                    @csrf
+                                    @method('DELETE')
 
-                                        <button type="submit"
-                                                class="btn btn-danger btn-sm"
-                                                onclick="return confirm('Yakin hapus data?')">
+                                    <button type="submit"
+                                        class="btn btn-danger btn-sm"
+                                        onclick="return confirm('Yakin hapus data?')">
 
-                                            Hapus
+                                        Hapus
 
-                                        </button>
+                                    </button>
 
-                                    </form>
+                                </form>
 
-                                </td>
+                            </td>
 
-                            </tr>
+                        </tr>
 
-                            @empty
+                        @empty
 
-                            <tr>
+                        <tr>
 
-                                <td colspan="5"
-                                    class="text-center">
+                            <td colspan="5"
+                                class="text-center">
 
-                                    Data peminjam belum tersedia
+                                Data peminjam belum tersedia
 
-                                </td>
+                            </td>
 
-                            </tr>
+                        </tr>
 
-                            @endforelse
+                        @endforelse
 
-                        </tbody>
+                    </tbody>
 
-                    </table>
-
-                </div>
+                </table>
 
             </div>
 
         </div>
 
-    </section>
+    </div>
+
+</section>
 
 </div>
 

@@ -12,16 +12,20 @@ class ModelPengembalian extends Model
     protected $table = 'pengembalians';
 
     protected $fillable = [
+
         'peminjaman_id',
         'tanggal_pengembalian',
+        'jumlah_kembali',
         'keterlambatan',
         'denda',
-        'kondisi_kembali'
+        'kondisi_kembali',
+        'catatan'
+
     ];
 
     /*
     |--------------------------------------------------------------------------
-    | RELASI
+    | RELASI KE PEMINJAMAN
     |--------------------------------------------------------------------------
     */
 
@@ -30,6 +34,38 @@ class ModelPengembalian extends Model
         return $this->belongsTo(
             ModelPeminjaman::class,
             'peminjaman_id'
+        );
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | RELASI KE ALAT (MELALUI PEMINJAMAN)
+    |--------------------------------------------------------------------------
+    */
+
+    public function alat()
+    {
+        return $this->hasOneThrough(
+            ModelAlat::class,
+            ModelPeminjaman::class,
+            'id',
+            'id',
+            'peminjaman_id',
+            'alat_id'
+        );
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | RELASI KE DENDA
+    |--------------------------------------------------------------------------
+    */
+
+    public function denda()
+    {
+        return $this->hasOne(
+            ModelDenda::class,
+            'pengembalian_id'
         );
     }
 }

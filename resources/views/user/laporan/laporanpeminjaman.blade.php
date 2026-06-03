@@ -8,53 +8,82 @@
 
 <div class="card">
 
-    <div class="card-header d-flex justify-content-between">
+    <div class="card-header d-flex justify-content-between align-items-center">
 
-        <h4>Laporan Peminjaman</h4>
+        <div class="d-flex gap-2 align-items-center">
+
+            <a href="{{ route('laporan.index') }}" class="btn btn-secondary btn-sm">
+                ← Kembali
+            </a>
+
+            <h4 class="mb-0">Laporan Peminjaman</h4>
+
+        </div>
 
         <a href="/laporan/cetakpeminjaman"
            target="_blank"
-           class="btn btn-primary">
+           class="btn btn-primary btn-sm">
 
             Cetak Laporan
-
         </a>
 
     </div>
 
     <div class="card-body">
 
-        <table class="table table-bordered">
+        <div class="table-responsive">
 
-            <thead>
-                <tr>
-                    <th>No</th>
-                    <th>User</th>
-                    <th>Alat</th>
-                    <th>Tanggal Pinjam</th>
-                    <th>Tanggal Kembali</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
+            <table class="table table-bordered table-striped">
 
-            <tbody>
+                <thead class="table-dark">
+                    <tr>
+                        <th>No</th>
+                        <th>User</th>
+                        <th>Alat</th>
+                        <th>Tanggal Pinjam</th>
+                        <th>Tanggal Kembali</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
 
-                @foreach($data as $item)
+                <tbody>
 
-                <tr>
-                    <td>{{ $loop->iteration }}</td>
-                    <td>{{ $item->user->nama ?? '-' }}</td>
-                    <td>{{ $item->alat->nama_alat ?? '-' }}</td>
-                    <td>{{ $item->tanggal_pinjam }}</td>
-                    <td>{{ $item->tanggal_kembali }}</td>
-                    <td>{{ $item->status }}</td>
-                </tr>
+                    @forelse($data as $item)
 
-                @endforeach
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $item->user->nama ?? '-' }}</td>
+                            <td>{{ $item->alat->nama_alat ?? '-' }}</td>
+                            <td>{{ $item->tanggal_pinjam }}</td>
+                            <td>{{ $item->tanggal_kembali ?? '-' }}</td>
+                            <td>
+                                @if($item->status == 'dipinjam')
+                                    <span class="badge bg-warning">Dipinjam</span>
+                                @elseif($item->status == 'dikembalikan')
+                                    <span class="badge bg-success">Dikembalikan</span>
+                                @else
+                                    <span class="badge bg-secondary">
+                                        {{ $item->status }}
+                                    </span>
+                                @endif
+                            </td>
+                        </tr>
 
-            </tbody>
+                    @empty
 
-        </table>
+                        <tr>
+                            <td colspan="6" class="text-center">
+                                Tidak ada data peminjaman
+                            </td>
+                        </tr>
+
+                    @endforelse
+
+                </tbody>
+
+            </table>
+
+        </div>
 
     </div>
 

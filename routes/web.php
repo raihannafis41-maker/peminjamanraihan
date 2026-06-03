@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/login', function () {
 
     return redirect('/loginpeminjam');
-
 })->name('login');
 
 /*
@@ -180,7 +179,6 @@ Route::middleware(['auth', 'role:admin,petugas'])
             '/dashboard',
             [DashboardController::class, 'index']
         )->name('dashboard');
-
     });
 
 /*
@@ -247,7 +245,6 @@ Route::middleware(['auth', 'role:admin,petugas'])
             'alat',
             AlatController::class
         );
-
     });
 
 /*
@@ -309,6 +306,7 @@ Route::middleware(['auth', 'role:admin,petugas'])
             [ApprovalController::class, 'approvalProses']
         )->name('approval.proses');
 
+
         /*
         |--------------------------------------------------------------------------
         | LOG ACTIVITY
@@ -319,7 +317,6 @@ Route::middleware(['auth', 'role:admin,petugas'])
             '/logactivity',
             [LogActivityController::class, 'index']
         )->name('logactivity');
-
     });
 
 /*
@@ -335,7 +332,6 @@ Route::middleware(['auth', 'role:peminjam'])
             '/dashboardpeminjam',
             [PeminjamDashboardController::class, 'index']
         )->name('dashboardpeminjam');
-
     });
 
 /*
@@ -419,6 +415,7 @@ Route::middleware(['auth', 'role:peminjam'])
             [ZonaPeminjamPeminjamanController::class, 'status']
         )->name('zonapeminjam.status');
 
+
         /*
         |--------------------------------------------------------------------------
         | RIWAYAT PEMINJAMAN
@@ -435,8 +432,11 @@ Route::middleware(['auth', 'role:peminjam'])
             [ZonaRiwayatController::class, 'show']
         )->name('zonapeminjam.riwayat.show');
 
+        Route::post(
+            '/kembalikan/{id}',
+            [ZonaPeminjamPeminjamanController::class, 'kembalikan']
+        )->name('zonapeminjam.kembalikan');
     });
-
 /*
 |--------------------------------------------------------------------------
 | LAPORAN
@@ -505,5 +505,4 @@ Route::middleware(['auth', 'role:admin,petugas'])
             '/cetakdenda',
             [LaporanDendaController::class, 'cetak']
         )->name('laporan.cetakdenda');
-
     });

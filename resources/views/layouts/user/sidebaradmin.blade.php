@@ -17,13 +17,13 @@
 
             <div class="image">
                 <img src="https://ui-avatars.com/api/?name=Admin&background=0D8ABC&color=fff"
-                     class="img-circle elevation-2"
-                     alt="User Image">
+                    class="img-circle elevation-2"
+                    alt="User Image">
             </div>
 
             <div class="info">
                 <a href="#"
-                   class="d-block">
+                    class="d-block">
 
                     {{ Auth::user()->nama ?? 'Administrator' }}
 
@@ -48,7 +48,7 @@
                 <li class="nav-item">
 
                     <a href="/dashboard"
-                       class="nav-link {{ request()->is('dashboard') ? 'active' : '' }}">
+                        class="nav-link {{ request()->is('dashboard') ? 'active' : '' }}">
 
                         <i class="nav-icon fas fa-home"></i>
 
@@ -67,8 +67,8 @@
 
                 <li class="nav-item has-treeview">
 
-                    <a href="#"
-                       class="nav-link">
+                    <a href="/master/user"
+                        class="nav-link">
 
                         <i class="nav-icon fas fa-database"></i>
 
@@ -87,7 +87,7 @@
                         <li class="nav-item">
 
                             <a href="/master/user"
-                               class="nav-link">
+                                class="nav-link">
 
                                 <i class="far fa-circle nav-icon"></i>
 
@@ -100,7 +100,7 @@
                         <li class="nav-item">
 
                             <a href="/master/peminjam"
-                               class="nav-link">
+                                class="nav-link">
 
                                 <i class="far fa-circle nav-icon"></i>
 
@@ -113,7 +113,7 @@
                         <li class="nav-item">
 
                             <a href="/master/kategori"
-                               class="nav-link">
+                                class="nav-link">
 
                                 <i class="far fa-circle nav-icon"></i>
 
@@ -126,7 +126,7 @@
                         <li class="nav-item">
 
                             <a href="/master/kondisi"
-                               class="nav-link">
+                                class="nav-link">
 
                                 <i class="far fa-circle nav-icon"></i>
 
@@ -139,7 +139,7 @@
                         <li class="nav-item">
 
                             <a href="/master/alat"
-                               class="nav-link">
+                                class="nav-link">
 
                                 <i class="far fa-circle nav-icon"></i>
 
@@ -161,7 +161,7 @@
                 <li class="nav-item">
 
                     <a href="/transaksi/peminjaman"
-                       class="nav-link">
+                        class="nav-link">
 
                         <i class="nav-icon fas fa-handshake"></i>
 
@@ -174,7 +174,7 @@
                 <li class="nav-item">
 
                     <a href="/transaksi/pengembalian"
-                       class="nav-link">
+                        class="nav-link">
 
                         <i class="nav-icon fas fa-undo"></i>
 
@@ -187,7 +187,7 @@
                 <li class="nav-item">
 
                     <a href="/transaksi/denda"
-                       class="nav-link">
+                        class="nav-link">
 
                         <i class="nav-icon fas fa-money-bill-wave"></i>
 
@@ -200,7 +200,7 @@
                 <li class="nav-item">
 
                     <a href="/transaksi/logactivity"
-                       class="nav-link">
+                        class="nav-link">
 
                         <i class="nav-icon fas fa-history"></i>
 
@@ -218,7 +218,7 @@
                 <li class="nav-item">
 
                     <a href="/laporan"
-                       class="nav-link">
+                        class="nav-link">
 
                         <i class="nav-icon fas fa-file-alt"></i>
 
@@ -236,7 +236,7 @@
                 <li class="nav-item">
 
                     <a href="/logoutuser"
-                       class="nav-link text-danger">
+                        class="nav-link text-danger">
 
                         <i class="nav-icon fas fa-sign-out-alt"></i>
 

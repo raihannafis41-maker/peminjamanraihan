@@ -12,17 +12,24 @@ class ModelAlat extends Model
     protected $table = 'alats';
 
     protected $fillable = [
+
         'kategori_id',
+        'kondisi_id',
+        'kode_alat',
         'nama_alat',
         'stok',
-        'kondisi',
+        'stok_tersedia',
+        'stok_dipinjam',
+        'lokasi',
+        'deskripsi',
         'foto',
         'status'
+
     ];
 
     /*
     |--------------------------------------------------------------------------
-    | RELASI
+    | RELASI KATEGORI
     |--------------------------------------------------------------------------
     */
 
@@ -33,6 +40,26 @@ class ModelAlat extends Model
             'kategori_id'
         );
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | RELASI KONDISI
+    |--------------------------------------------------------------------------
+    */
+
+    public function kondisi()
+    {
+        return $this->belongsTo(
+            ModelKondisi::class,
+            'kondisi_id'
+        );
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | RELASI PEMINJAMAN
+    |--------------------------------------------------------------------------
+    */
 
     public function peminjaman()
     {

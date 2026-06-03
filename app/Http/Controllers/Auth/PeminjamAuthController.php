@@ -19,6 +19,15 @@ class PeminjamAuthController extends Controller
 
     public function login()
     {
+        if (Auth::check()) {
+
+            if (Auth::user()->role == 'peminjam') {
+                return redirect()->route('zonapeminjam.dashboard');
+            }
+
+            return redirect()->route('dashboard');
+        }
+
         return view('auth.loginpeminjam');
     }
 
@@ -43,23 +52,34 @@ class PeminjamAuthController extends Controller
     {
         $request->validate([
 
-            'nama'      => 'required',
-            'username'  => 'required|unique:users,username',
-            'password'  => 'required|min:4',
+            'nama' => 'required|string|max:255',
+
+            'username' => 'required|string|max:255|unique:users,username',
+
+            'password' => 'required|min:4|confirmed',
 
         ]);
 
         ModelUser::create([
 
-            'nama'      => $request->nama,
-            'username'  => $request->username,
-            'password'  => Hash::make($request->password),
-            'role'      => 'peminjam',
+            'nama' => $request->nama,
+
+            'username' => $request->username,
+
+            'password' => Hash::make(
+                $request->password
+            ),
+
+            'role' => 'peminjam',
 
         ]);
 
-        return redirect('/loginpeminjam')
-            ->with('success', 'Registrasi berhasil');
+        return redirect()
+            ->route('loginpeminjam')
+            ->with(
+                'success',
+                'Registrasi berhasil, silakan login.'
+            );
     }
 
     /*
@@ -73,6 +93,7 @@ class PeminjamAuthController extends Controller
         $request->validate([
 
             'username' => 'required',
+
             'password' => 'required',
 
         ]);
@@ -80,6 +101,7 @@ class PeminjamAuthController extends Controller
         $credential = [
 
             'username' => $request->username,
+
             'password' => $request->password,
 
         ];
@@ -90,22 +112,43 @@ class PeminjamAuthController extends Controller
 
             /*
             |--------------------------------------------------------------------------
-            | REDIRECT ROLE
+            | REDIRECT BERDASARKAN ROLE
             |--------------------------------------------------------------------------
             */
 
             if (Auth::user()->role == 'peminjam') {
 
-                return redirect()->route('peminjam.dashboard');
+                return redirect()->route(
+                    'zonapeminjam.dashboard'
+                );
             }
 
-            return redirect('/dashboard');
+            if (
+                Auth::user()->role == 'admin' ||
+                Auth::user()->role == 'petugas'
+            ) {
+
+                return redirect()->route(
+                    'dashboard'
+                );
+            }
+
+            Auth::logout();
+
+            return redirect()
+                ->route('loginpeminjam')
+                ->with(
+                    'error',
+                    'Role pengguna tidak dikenali.'
+                );
         }
 
-        return back()->with(
-            'error',
-            'Username atau password salah'
-        );
+        return back()
+            ->withInput()
+            ->with(
+                'error',
+                'Username atau password salah.'
+            );
     }
 
     /*
@@ -122,6 +165,11 @@ class PeminjamAuthController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/loginpeminjam');
+        return redirect()
+            ->route('loginpeminjam')
+            ->with(
+                'success',
+                'Berhasil logout.'
+            );
     }
 }

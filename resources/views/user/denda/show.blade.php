@@ -4,50 +4,91 @@
 
 @section('content')
 
-<div class="content-wrapper">
-
 <section class="content-header">
+
+```
 <div class="container-fluid">
-<h1>Detail Denda</h1>
+
+    <h1>Detail Denda</h1>
+
 </div>
+```
+
 </section>
 
 <section class="content">
 
+```
 <div class="card">
 
-<div class="card-body">
+    <div class="card-body">
 
-<table class="table table-bordered">
+        <table class="table table-bordered">
 
-<tr>
-<th width="250">Nama Peminjam</th>
-<td>{{ $data->peminjaman->user->nama ?? '-' }}</td>
-</tr>
+            <tr>
 
-<tr>
-<th>Nama Alat</th>
-<td>{{ $data->peminjaman->alat->nama_alat ?? '-' }}</td>
-</tr>
+                <th>Peminjam</th>
 
-<tr>
-<th>Keterlambatan</th>
-<td>{{ $data->keterlambatan }} Hari</td>
-</tr>
+                <td>
+                    {{ $data->pengembalian->peminjaman->user->nama ?? '-' }}
+                </td>
 
-<tr>
-<th>Denda</th>
-<td>Rp {{ number_format($data->denda) }}</td>
-</tr>
+            </tr>
 
-</table>
+            <tr>
+
+                <th>Alat</th>
+
+                <td>
+                    {{ $data->pengembalian->peminjaman->alat->nama_alat ?? '-' }}
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <th>Keterlambatan</th>
+
+                <td>
+                    {{ $data->pengembalian->keterlambatan }} Hari
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <th>Total Denda</th>
+
+                <td>
+                    Rp {{ number_format($data->total_denda,0,',','.') }}
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <th>Status Bayar</th>
+
+                <td>
+                    {{ ucfirst(str_replace('_',' ',$data->status_bayar)) }}
+                </td>
+
+            </tr>
+
+        </table>
+
+        <a href="{{ route('denda.index') }}"
+           class="btn btn-secondary">
+
+            Kembali
+
+        </a>
+
+    </div>
 
 </div>
-
-</div>
+```
 
 </section>
-
-</div>
 
 @endsection

@@ -21,10 +21,9 @@ class ApprovalController extends Controller
     public function approval($id)
     {
         $data = ModelPeminjaman::with([
-                    'user',
-                    'alat'
-                ])
-                ->findOrFail($id);
+            'user',
+            'alat'
+        ])->findOrFail($id);
 
         return view(
             'user.peminjaman.approval',
@@ -41,35 +40,24 @@ class ApprovalController extends Controller
     public function approvalProses(Request $request, $id)
     {
         $request->validate([
-
-            'status' => 'required'
-
+            'status' => 'required|in:approved,rejected'
         ]);
 
         $data = ModelPeminjaman::findOrFail($id);
 
         $alat = ModelAlat::findOrFail(
-                    $data->alat_id
-                );
+            $data->alat_id
+        );
 
         /*
         |--------------------------------------------------------------------------
-        | JIKA APPROVED
+        | APPROVED
         |--------------------------------------------------------------------------
         */
 
         if ($request->status == 'approved') {
 
-            /*
-            |--------------------------------------------------------------------------
-            | CEK STOK
-            |--------------------------------------------------------------------------
-            */
-
-            if (
-                $alat->stok_tersedia <
-                $data->jumlah
-            ) {
+            if ($alat->stok < $data->jumlah) {
 
                 return back()->with(
                     'error',
@@ -77,42 +65,19 @@ class ApprovalController extends Controller
                 );
             }
 
-            /*
-            |--------------------------------------------------------------------------
-            | KURANGI STOK
-            |--------------------------------------------------------------------------
-            */
+            $alat->stok =
+                $alat->stok - $data->jumlah;
 
-            $alat->stok_tersedia =
-                $alat->stok_tersedia -
-                $data->jumlah;
-
-            $alat->stok_dipinjam =
-                $alat->stok_dipinjam +
-                $data->jumlah;
-
-            /*
-            |--------------------------------------------------------------------------
-            | UPDATE STATUS ALAT
-            |--------------------------------------------------------------------------
-            */
-
-            if ($alat->stok_tersedia <= 0) {
+            if ($alat->stok <= 0) {
 
                 $alat->status = 'habis';
 
             } else {
 
-                $alat->status = 'dipinjam';
+                $alat->status = 'tersedia';
             }
 
             $alat->save();
-
-            /*
-            |--------------------------------------------------------------------------
-            | UPDATE STATUS PEMINJAMAN
-            |--------------------------------------------------------------------------
-            */
 
             $data->update([
 
@@ -122,15 +87,9 @@ class ApprovalController extends Controller
 
             ]);
 
-            /*
-            |--------------------------------------------------------------------------
-            | LOG ACTIVITY
-            |--------------------------------------------------------------------------
-            */
-
             ModelLogActivity::create([
 
-                'user_id'   => Auth::id(),
+                'user_id' => Auth::id(),
 
                 'aktivitas' =>
                     'Menyetujui peminjaman dengan kode : '
@@ -147,46 +106,32 @@ class ApprovalController extends Controller
 
         /*
         |--------------------------------------------------------------------------
-        | JIKA REJECTED
+        | REJECTED
         |--------------------------------------------------------------------------
         */
 
-        if ($request->status == 'rejected') {
+        $data->update([
 
-            $data->update([
+            'status'      => 'rejected',
 
-                'status'      => 'rejected',
+            'approval_by' => Auth::id(),
 
-                'approval_by' => Auth::id(),
+        ]);
 
-            ]);
+        ModelLogActivity::create([
 
-            /*
-            |--------------------------------------------------------------------------
-            | LOG ACTIVITY
-            |--------------------------------------------------------------------------
-            */
+            'user_id' => Auth::id(),
 
-            ModelLogActivity::create([
+            'aktivitas' =>
+                'Menolak peminjaman dengan kode : '
+                . $data->kode_peminjaman
 
-                'user_id'   => Auth::id(),
+        ]);
 
-                'aktivitas' =>
-                    'Menolak peminjaman dengan kode : '
-                    . $data->kode_peminjaman
-
-            ]);
-
-            return redirect('/transaksi/peminjaman')
-                ->with(
-                    'success',
-                    'Peminjaman berhasil ditolak'
-                );
-        }
-
-        return back()->with(
-            'error',
-            'Terjadi kesalahan'
-        );
+        return redirect('/transaksi/peminjaman')
+            ->with(
+                'success',
+                'Peminjaman berhasil ditolak'
+            );
     }
 }

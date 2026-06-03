@@ -1,5 +1,3 @@
-{{-- resources/views/user/laporan/laporandenda.blade.php --}}
-
 @extends('layouts.appuser')
 
 @section('title', 'Laporan Denda')
@@ -8,14 +6,25 @@
 
 <div class="card">
 
-    <div class="card-header d-flex justify-content-between">
+    <div class="card-header d-flex justify-content-between align-items-center">
 
-        <h4>Laporan Denda</h4>
+        <div class="d-flex gap-2 align-items-center">
+            <a href="{{ url()->previous() }}" class="btn btn-secondary btn-sm">
+                ← Kembali
+            </a>
 
-        <a href="/laporan/cetakdenda"
-           target="_blank"
-           class="btn btn-danger">
+            
+        </div>
 
+        <h4 class="mb-0">
+            Laporan Denda
+        </h4>
+
+        <a href="{{ route('laporan.cetakdenda') }}"
+            target="_blank"
+            class="btn btn-danger">
+
+            <i class="fas fa-print"></i>
             Cetak Laporan
 
         </a>
@@ -24,42 +33,107 @@
 
     <div class="card-body">
 
-        <table class="table table-bordered">
+        <div class="table-responsive">
 
-            <thead>
+            <table class="table table-bordered table-striped">
 
-                <tr>
-                    <th>No</th>
-                    <th>Nama Denda</th>
-                    <th>Nominal</th>
-                    <th>Keterangan</th>
-                </tr>
+                <thead class="table-dark">
 
-            </thead>
+                    <tr>
 
-            <tbody>
+                        <th width="5%">
+                            No
+                        </th>
 
-                @foreach($data as $item)
+                        <th>
+                            Nama Peminjam
+                        </th>
 
-                <tr>
+                        <th>
+                            Nama Alat
+                        </th>
 
-                    <td>{{ $loop->iteration }}</td>
+                        <th>
+                            Keterlambatan
+                        </th>
 
-                    <td>{{ $item->nama_denda }}</td>
+                        <th>
+                            Total Denda
+                        </th>
 
-                    <td>
-                        Rp {{ number_format($item->nominal) }}
-                    </td>
+                        <th>
+                            Status Bayar
+                        </th>
 
-                    <td>{{ $item->keterangan }}</td>
+                    </tr>
 
-                </tr>
+                </thead>
 
-                @endforeach
+                <tbody>
 
-            </tbody>
+                    @forelse($data as $item)
 
-        </table>
+                    <tr>
+
+                        <td>
+                            {{ $loop->iteration }}
+                        </td>
+
+                        <td>
+                            {{ $item->pengembalian->peminjaman->user->nama ?? '-' }}
+                        </td>
+
+                        <td>
+                            {{ $item->pengembalian->peminjaman->alat->nama_alat ?? '-' }}
+                        </td>
+
+                        <td>
+                            {{ $item->pengembalian->keterlambatan ?? 0 }} Hari
+                        </td>
+
+                        <td>
+                            Rp {{ number_format($item->total_denda, 0, ',', '.') }}
+                        </td>
+
+                        <td>
+
+                            @if($item->status_bayar == 'sudah_bayar')
+
+                            <span class="badge bg-success">
+                                Sudah Bayar
+                            </span>
+
+                            @else
+
+                            <span class="badge bg-danger">
+                                Belum Bayar
+                            </span>
+
+                            @endif
+
+                        </td>
+
+                    </tr>
+
+                    @empty
+
+                    <tr>
+
+                        <td colspan="6" class="text-center">
+
+                            Tidak ada data denda.
+
+                        </td>
+
+                    </tr>
+
+                    @endforelse
+
+                </tbody>
+
+            </table>
+
+        </div>
 
     </div>
 

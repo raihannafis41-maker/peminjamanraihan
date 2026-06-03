@@ -12,17 +12,22 @@ class ModelPeminjaman extends Model
     protected $table = 'peminjamans';
 
     protected $fillable = [
+
         'user_id',
         'alat_id',
+        'approval_by',
+        'kode_peminjaman',
         'tanggal_pinjam',
         'tanggal_kembali',
         'jumlah',
+        'catatan',
         'status'
+
     ];
 
     /*
     |--------------------------------------------------------------------------
-    | RELASI
+    | RELASI USER PEMINJAM
     |--------------------------------------------------------------------------
     */
 
@@ -34,6 +39,12 @@ class ModelPeminjaman extends Model
         );
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | RELASI ALAT
+    |--------------------------------------------------------------------------
+    */
+
     public function alat()
     {
         return $this->belongsTo(
@@ -41,6 +52,26 @@ class ModelPeminjaman extends Model
             'alat_id'
         );
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | RELASI PETUGAS / ADMIN YANG MENYETUJUI
+    |--------------------------------------------------------------------------
+    */
+
+    public function approver()
+    {
+        return $this->belongsTo(
+            ModelUser::class,
+            'approval_by'
+        );
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | RELASI PENGEMBALIAN
+    |--------------------------------------------------------------------------
+    */
 
     public function pengembalian()
     {

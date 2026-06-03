@@ -5,22 +5,40 @@
 @section('content')
 
 <section class="content-header">
-
     <div class="container-fluid">
 
         <h1 class="fw-bold">
-
-            Ajukan Peminjaman
-
+            Ajukan Peminjaman Alat
         </h1>
 
     </div>
-
 </section>
 
 <section class="content">
 
     <div class="container-fluid">
+
+        @if(session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+
+        @if ($errors->any())
+            <div class="alert alert-danger">
+
+                <ul class="mb-0">
+
+                    @foreach ($errors->all() as $error)
+
+                        <li>{{ $error }}</li>
+
+                    @endforeach
+
+                </ul>
+
+            </div>
+        @endif
 
         <div class="card shadow border-0">
 
@@ -34,16 +52,18 @@
 
             </div>
 
-            <form action="{{ route('zonapeminjam.pinjam.store') }}"
-                  method="POST">
+            <form
+                action="{{ route('zonapeminjam.pinjam.store') }}"
+                method="POST">
 
                 @csrf
 
                 <div class="card-body">
 
-                    <input type="hidden"
-                           name="alat_id"
-                           value="{{ $alat->id }}">
+                    <input
+                        type="hidden"
+                        name="alat_id"
+                        value="{{ $alat->id }}">
 
                     <div class="mb-3">
 
@@ -53,10 +73,11 @@
 
                         </label>
 
-                        <input type="text"
-                               class="form-control"
-                               value="{{ $alat->nama_alat }}"
-                               readonly>
+                        <input
+                            type="text"
+                            class="form-control"
+                            value="{{ $alat->nama_alat }}"
+                            readonly>
 
                     </div>
 
@@ -68,10 +89,11 @@
 
                         </label>
 
-                        <input type="text"
-                               class="form-control"
-                               value="{{ $alat->stok }}"
-                               readonly>
+                        <input
+                            type="text"
+                            class="form-control"
+                            value="{{ $alat->stok_tersedia }}"
+                            readonly>
 
                     </div>
 
@@ -83,10 +105,11 @@
 
                         </label>
 
-                        <input type="date"
-                               name="tanggal_pinjam"
-                               class="form-control"
-                               required>
+                        <input
+                            type="date"
+                            name="tanggal_pinjam"
+                            class="form-control"
+                            required>
 
                     </div>
 
@@ -98,10 +121,11 @@
 
                         </label>
 
-                        <input type="date"
-                               name="tanggal_kembali"
-                               class="form-control"
-                               required>
+                        <input
+                            type="date"
+                            name="tanggal_kembali"
+                            class="form-control"
+                            required>
 
                     </div>
 
@@ -113,12 +137,29 @@
 
                         </label>
 
-                        <input type="number"
-                               name="jumlah"
-                               class="form-control"
-                               min="1"
-                               max="{{ $alat->stok }}"
-                               required>
+                        <input
+                            type="number"
+                            name="jumlah"
+                            class="form-control"
+                            min="1"
+                            max="{{ $alat->stok_tersedia }}"
+                            required>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+
+                            Catatan
+
+                        </label>
+
+                        <textarea
+                            name="catatan"
+                            class="form-control"
+                            rows="3"
+                            placeholder="Masukkan alasan atau keperluan peminjaman"></textarea>
 
                     </div>
 
@@ -126,17 +167,20 @@
 
                 <div class="card-footer">
 
-                    <button type="submit"
-                            class="btn btn-primary">
+                    <button
+                        type="submit"
+                        class="btn btn-primary">
 
-                        <i class="fas fa-save"></i>
+                        <i class="fas fa-save me-1"></i>
                         Ajukan Peminjaman
 
                     </button>
 
-                    <a href="/zonapeminjam/alat"
-                       class="btn btn-secondary">
+                    <a
+                        href="{{ route('zonapeminjam.alat') }}"
+                        class="btn btn-secondary">
 
+                        <i class="fas fa-arrow-left me-1"></i>
                         Kembali
 
                     </a>

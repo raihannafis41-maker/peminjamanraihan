@@ -4,13 +4,29 @@
 
 <div class="container py-4">
 
+    <div class="d-flex justify-content-between align-items-center mb-3">
+
+        <h3 class="fw-bold mb-0">
+            Detail Riwayat Peminjaman
+        </h3>
+
+        <a href="{{ route('zonapeminjam.riwayat') }}"
+           class="btn btn-secondary">
+
+            <i class="fas fa-arrow-left"></i>
+            Kembali
+
+        </a>
+
+    </div>
+
     <div class="card shadow border-0">
 
         <div class="card-header bg-dark text-white">
 
             <h4 class="mb-0">
 
-                Detail Riwayat Peminjaman
+                Informasi Peminjaman
 
             </h4>
 
@@ -28,6 +44,18 @@
 
                     <td>
                         {{ $data->alat->nama_alat ?? '-' }}
+                    </td>
+
+                </tr>
+
+                <tr>
+
+                    <th>
+                        Kode Peminjaman
+                    </th>
+
+                    <td>
+                        {{ $data->kode_peminjaman ?? '-' }}
                     </td>
 
                 </tr>
@@ -76,47 +104,44 @@
 
                     <td>
 
-                        @if($data->status == 'pending')
+                        @switch($data->status)
 
-                            <span class="badge bg-warning">
+                            @case('pending')
+                                <span class="badge bg-warning">
+                                    Pending
+                                </span>
+                            @break
 
-                                Pending
+                            @case('approved')
+                                <span class="badge bg-success">
+                                    Disetujui
+                                </span>
+                            @break
 
-                            </span>
+                            @case('dipinjam')
+                                <span class="badge bg-primary">
+                                    Sedang Dipinjam
+                                </span>
+                            @break
 
-                        @elseif($data->status == 'approved')
+                            @case('dikembalikan')
+                                <span class="badge bg-info">
+                                    Dikembalikan
+                                </span>
+                            @break
 
-                            <span class="badge bg-primary">
+                            @case('rejected')
+                                <span class="badge bg-danger">
+                                    Ditolak
+                                </span>
+                            @break
 
-                                Approved
+                            @default
+                                <span class="badge bg-secondary">
+                                    {{ ucfirst($data->status) }}
+                                </span>
 
-                            </span>
-
-                        @elseif($data->status == 'selesai')
-
-                            <span class="badge bg-success">
-
-                                Selesai
-
-                            </span>
-
-                        @elseif($data->status == 'ditolak')
-
-                            <span class="badge bg-danger">
-
-                                Ditolak
-
-                            </span>
-
-                        @else
-
-                            <span class="badge bg-secondary">
-
-                                {{ $data->status }}
-
-                            </span>
-
-                        @endif
+                        @endswitch
 
                     </td>
 
@@ -125,23 +150,28 @@
                 <tr>
 
                     <th>
-                        Keterangan
+                        Catatan
                     </th>
 
                     <td>
-                        {{ $data->keterangan ?? '-' }}
+                        {{ $data->catatan ?? '-' }}
                     </td>
 
                 </tr>
 
             </table>
 
-            <a href="{{ route('zonapeminjam.riwayat') }}"
-               class="btn btn-secondary">
+            <div class="mt-3">
 
-                Kembali
+                <a href="{{ route('zonapeminjam.riwayat') }}"
+                   class="btn btn-secondary">
 
-            </a>
+                    <i class="fas fa-arrow-left"></i>
+                    Kembali ke Riwayat
+
+                </a>
+
+            </div>
 
         </div>
 

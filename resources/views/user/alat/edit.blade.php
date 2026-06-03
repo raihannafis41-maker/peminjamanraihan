@@ -4,118 +4,108 @@
 
 @section('content')
 
-<div class="content-wrapper">
-
 <section class="content-header">
-<div class="container-fluid">
-<h1>Edit Alat</h1>
-</div>
+    <div class="container-fluid">
+        <h1>Edit Alat</h1>
+    </div>
 </section>
 
 <section class="content">
 
-<div class="card">
+    <div class="card">
 
-<div class="card-body">
+        <div class="card-header d-flex justify-content-between">
+            <a href="{{ route('alat.index') }}" class="btn btn-secondary">
+                ← Kembali
+            </a>
+        </div>
 
-<form action="{{ route('alat.update', $data->id) }}"
-method="POST"
-enctype="multipart/form-data">
+        <div class="card-body">
 
-@csrf
-@method('PUT')
+            <form action="{{ route('alat.update', $data->id) }}"
+                method="POST"
+                enctype="multipart/form-data">
 
-<div class="form-group">
-<label>Kategori</label>
+                @csrf
+                @method('PUT')
 
-<select name="kategori_id"
-class="form-control">
+                <div class="form-group">
+                    <label>Kategori</label>
+                    <select name="kategori_id" class="form-control">
+                        @foreach($kategori as $item)
+                            <option value="{{ $item->id }}"
+                                {{ $data->kategori_id == $item->id ? 'selected' : '' }}>
+                                {{ $item->nama_kategori }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
 
-@foreach($kategori as $item)
+                <div class="form-group">
+                    <label>Nama Alat</label>
+                    <input type="text"
+                        name="nama_alat"
+                        value="{{ $data->nama_alat }}"
+                        class="form-control">
+                </div>
 
-<option value="{{ $item->id }}"
-{{ $data->kategori_id == $item->id ? 'selected' : '' }}>
+                <div class="form-group">
+                    <label>Stok</label>
+                    <input type="number"
+                        name="stok"
+                        value="{{ $data->stok }}"
+                        class="form-control">
+                </div>
 
-{{ $item->nama_kategori }}
+                <div class="form-group">
+                    <label>Kondisi</label>
+                    <select name="kondisi_id" class="form-control">
+                        @foreach($kondisi as $item)
+                            <option value="{{ $item->id }}"
+                                {{ $data->kondisi_id == $item->id ? 'selected' : '' }}>
+                                {{ $item->nama_kondisi }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
 
-</option>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select name="status" class="form-control">
+                        <option value="tersedia"
+                            {{ $data->status == 'tersedia' ? 'selected' : '' }}>
+                            Tersedia
+                        </option>
 
-@endforeach
+                        <option value="dipinjam"
+                            {{ $data->status == 'dipinjam' ? 'selected' : '' }}>
+                            Dipinjam
+                        </option>
+                    </select>
+                </div>
 
-</select>
+                <div class="form-group">
+                    <label>Foto</label>
 
-</div>
+                    <input type="file" name="foto" class="form-control">
 
-<div class="form-group">
-<label>Nama Alat</label>
+                    @if($data->foto)
+                        <br>
+                        <img src="{{ asset('uploads/alat/' . $data->foto) }}"
+                            width="120">
+                    @endif
+                </div>
 
-<input type="text"
-name="nama_alat"
-value="{{ $data->nama_alat }}"
-class="form-control">
-</div>
+                <button class="btn btn-warning">
+                    Update
+                </button>
 
-<div class="form-group">
-<label>Stok</label>
+            </form>
 
-<input type="number"
-name="stok"
-value="{{ $data->stok }}"
-class="form-control">
-</div>
+        </div>
 
-<div class="form-group">
-<label>Kondisi</label>
-
-<select name="kondisi"
-class="form-control">
-
-<option value="baik"
-{{ $data->kondisi == 'baik' ? 'selected' : '' }}>
-Baik
-</option>
-
-<option value="rusak"
-{{ $data->kondisi == 'rusak' ? 'selected' : '' }}>
-Rusak
-</option>
-
-</select>
-
-</div>
-
-<div class="form-group">
-<label>Status</label>
-
-<select name="status"
-class="form-control">
-
-<option value="tersedia"
-{{ $data->status == 'tersedia' ? 'selected' : '' }}>
-Tersedia
-</option>
-
-<option value="dipinjam"
-{{ $data->status == 'dipinjam' ? 'selected' : '' }}>
-Dipinjam
-</option>
-
-</select>
-
-</div>
-
-<button class="btn btn-warning">
-Update
-</button>
-
-</form>
-
-</div>
-
-</div>
+    </div>
 
 </section>
-
-</div>
 
 @endsection

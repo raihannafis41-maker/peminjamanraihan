@@ -9,27 +9,27 @@ class ModelDenda extends Model
 {
     use HasFactory;
 
-    protected $table = 'pengembalians';
+    protected $table = 'dendas';
 
     protected $fillable = [
-        'peminjaman_id',
-        'tanggal_pengembalian',
-        'keterlambatan',
-        'denda',
-        'kondisi_kembali'
+
+        'pengembalian_id',
+        'total_denda',
+        'status_bayar'
+
     ];
 
     /*
     |--------------------------------------------------------------------------
-    | RELASI
+    | RELASI KE PENGEMBALIAN
     |--------------------------------------------------------------------------
     */
 
-    public function peminjaman()
+    public function pengembalian()
     {
         return $this->belongsTo(
-            ModelPeminjaman::class,
-            'peminjaman_id'
+            ModelPengembalian::class,
+            'pengembalian_id'
         );
     }
 }

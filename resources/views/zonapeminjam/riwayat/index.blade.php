@@ -14,13 +14,14 @@
         <a href="{{ route('zonapeminjam.alat') }}"
            class="btn btn-primary">
 
+            <i class="fas fa-plus"></i>
             Pinjam Alat
 
         </a>
 
     </div>
 
-    {{-- ALERT --}}
+    {{-- ALERT SUCCESS --}}
     @if(session('success'))
 
         <div class="alert alert-success">
@@ -31,8 +32,27 @@
 
     @endif
 
+    {{-- ALERT ERROR --}}
+    @if(session('error'))
+
+        <div class="alert alert-danger">
+
+            {{ session('error') }}
+
+        </div>
+
+    @endif
+
     {{-- TABEL --}}
     <div class="card shadow-sm border-0">
+
+        <div class="card-header bg-dark text-white">
+
+            <h5 class="mb-0">
+                Data Riwayat Peminjaman
+            </h5>
+
+        </div>
 
         <div class="card-body">
 
@@ -44,17 +64,37 @@
 
                         <tr>
 
-                            <th width="5%">No</th>
+                            <th width="5%">
+                                No
+                            </th>
 
-                            <th>Nama Alat</th>
+                            <th>
+                                Kode Peminjaman
+                            </th>
 
-                            <th>Tanggal Pinjam</th>
+                            <th>
+                                Nama Alat
+                            </th>
 
-                            <th>Tanggal Kembali</th>
+                            <th>
+                                Tanggal Pinjam
+                            </th>
 
-                            <th>Status</th>
+                            <th>
+                                Tanggal Kembali
+                            </th>
 
-                            <th width="15%">Aksi</th>
+                            <th>
+                                Jumlah
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th width="25%">
+                                Aksi
+                            </th>
 
                         </tr>
 
@@ -71,6 +111,10 @@
                                 </td>
 
                                 <td>
+                                    {{ $item->kode_peminjaman }}
+                                </td>
+
+                                <td>
                                     {{ $item->alat->nama_alat ?? '-' }}
                                 </td>
 
@@ -83,43 +127,98 @@
                                 </td>
 
                                 <td>
+                                    {{ $item->jumlah }}
+                                </td>
 
-                                    @if($item->status == 'pending')
+                                <td>
 
-                                        <span class="badge bg-warning">
-                                            Pending
-                                        </span>
+                                    @switch($item->status)
 
-                                    @elseif($item->status == 'dipinjam')
+                                        @case('pending')
 
-                                        <span class="badge bg-primary">
-                                            Dipinjam
-                                        </span>
+                                            <span class="badge bg-warning">
+                                                Pending
+                                            </span>
 
-                                    @elseif($item->status == 'dikembalikan')
+                                        @break
 
-                                        <span class="badge bg-success">
-                                            Dikembalikan
-                                        </span>
+                                        @case('approved')
 
-                                    @else
+                                            <span class="badge bg-success">
+                                                Disetujui
+                                            </span>
 
-                                        <span class="badge bg-danger">
-                                            Ditolak
-                                        </span>
+                                        @break
 
-                                    @endif
+                                        @case('dipinjam')
+
+                                            <span class="badge bg-primary">
+                                                Sedang Dipinjam
+                                            </span>
+
+                                        @break
+
+                                        @case('dikembalikan')
+
+                                            <span class="badge bg-info">
+                                                Dikembalikan
+                                            </span>
+
+                                        @break
+
+                                        @case('rejected')
+
+                                            <span class="badge bg-danger">
+                                                Ditolak
+                                            </span>
+
+                                        @break
+
+                                        @default
+
+                                            <span class="badge bg-secondary">
+                                                {{ ucfirst($item->status) }}
+                                            </span>
+
+                                    @endswitch
 
                                 </td>
 
                                 <td>
 
+                                    {{-- DETAIL --}}
                                     <a href="{{ route('zonapeminjam.riwayat.show', $item->id) }}"
                                        class="btn btn-info btn-sm">
 
+                                        <i class="fas fa-eye"></i>
                                         Detail
 
                                     </a>
+
+                                    {{-- KEMBALIKAN BARANG --}}
+                                    @if(
+                                        $item->status == 'approved' ||
+                                        $item->status == 'dipinjam'
+                                    )
+
+                                        <form action="{{ route('zonapeminjam.kembalikan', $item->id) }}"
+                                              method="POST"
+                                              class="d-inline">
+
+                                            @csrf
+
+                                            <button type="submit"
+                                                    class="btn btn-success btn-sm"
+                                                    onclick="return confirm('Yakin ingin mengembalikan barang ini?')">
+
+                                                <i class="fas fa-undo"></i>
+                                                Kembalikan
+
+                                            </button>
+
+                                        </form>
+
+                                    @endif
 
                                 </td>
 
@@ -129,7 +228,7 @@
 
                             <tr>
 
-                                <td colspan="6"
+                                <td colspan="8"
                                     class="text-center">
 
                                     Belum ada riwayat peminjaman.

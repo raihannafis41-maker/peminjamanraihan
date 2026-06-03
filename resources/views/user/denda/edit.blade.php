@@ -4,56 +4,105 @@
 
 @section('content')
 
-<div class="content-wrapper">
-
 <section class="content-header">
+
+```
 <div class="container-fluid">
-<h1>Edit Denda</h1>
+
+    <h1>Edit Denda</h1>
+
 </div>
+```
+
 </section>
 
 <section class="content">
 
+```
 <div class="card">
 
-<div class="card-body">
+    <div class="card-body">
 
-<form action="{{ route('denda.update', $data->id) }}"
-method="POST">
+        <form action="{{ route('denda.update',$data->id) }}"
+              method="POST">
 
-@csrf
-@method('PUT')
+            @csrf
+            @method('PUT')
 
-<div class="form-group">
-<label>Keterlambatan</label>
+            <div class="mb-3">
 
-<input type="number"
-name="keterlambatan"
-value="{{ $data->keterlambatan }}"
-class="form-control">
+                <label>Pengembalian</label>
+
+                <select name="pengembalian_id"
+                        class="form-control">
+
+                    @foreach($pengembalian as $item)
+
+                    <option value="{{ $item->id }}"
+                        {{ $item->id == $data->pengembalian_id ? 'selected' : '' }}>
+
+                        {{ $item->peminjaman->kode_peminjaman ?? '-' }}
+
+                    </option>
+
+                    @endforeach
+
+                </select>
+
+            </div>
+
+            <div class="mb-3">
+
+                <label>Total Denda</label>
+
+                <input type="number"
+                       name="total_denda"
+                       value="{{ $data->total_denda }}"
+                       class="form-control">
+
+            </div>
+
+            <div class="mb-3">
+
+                <label>Status Bayar</label>
+
+                <select name="status_bayar"
+                        class="form-control">
+
+                    <option value="belum_bayar"
+                        {{ $data->status_bayar == 'belum_bayar' ? 'selected' : '' }}>
+                        Belum Bayar
+                    </option>
+
+                    <option value="sudah_bayar"
+                        {{ $data->status_bayar == 'sudah_bayar' ? 'selected' : '' }}>
+                        Sudah Bayar
+                    </option>
+
+                </select>
+
+            </div>
+
+            <button class="btn btn-success">
+
+                Update
+
+            </button>
+
+            <a href="{{ route('denda.index') }}"
+               class="btn btn-secondary">
+
+                Kembali
+
+            </a>
+
+        </form>
+
+    </div>
+
 </div>
-
-<div class="form-group">
-<label>Denda</label>
-
-<input type="number"
-name="denda"
-value="{{ $data->denda }}"
-class="form-control">
-</div>
-
-<button class="btn btn-warning">
-Update
-</button>
-
-</form>
-
-</div>
-
-</div>
+```
 
 </section>
-
-</div>
 
 @endsection

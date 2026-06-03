@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Models\ModelPeminjaman;
 use App\Models\ModelSuratTeguran;
-use App\Models\ModelDenda;
+use App\Models\ModelPengembalian;
 use App\Models\ModelAlat;
 
 class DashboardController extends Controller
@@ -29,8 +29,8 @@ class DashboardController extends Controller
             'approved'
         )->count();
 
-        $totalDenda = ModelDenda::whereHas(
-            'pengembalian.peminjaman',
+        $totalDenda = ModelPengembalian::whereHas(
+            'peminjaman',
             function ($query) use ($userId) {
 
                 $query->where(
@@ -38,12 +38,20 @@ class DashboardController extends Controller
                     $userId
                 );
             }
-        )->sum('total_denda');
+        )->sum('denda');
 
-        $teguran = ModelSuratTeguran::where(
-            'user_id',
-            $userId
-        )->latest()->get();
+        try {
+
+            $teguran = ModelSuratTeguran::where(
+                'user_id',
+                $userId
+            )->latest()->get();
+
+        } catch (\Exception $e) {
+
+            $teguran = collect();
+
+        }
 
         $alatTersedia = ModelAlat::where(
             'status',
@@ -51,7 +59,7 @@ class DashboardController extends Controller
         )->count();
 
         return view(
-            'zonaPeminjam.dashboard.peminjam',
+            'zonapeminjam.dashboard.peminjam',
             compact(
                 'totalPeminjaman',
                 'peminjamanAktif',

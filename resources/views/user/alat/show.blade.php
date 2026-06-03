@@ -4,68 +4,76 @@
 
 @section('content')
 
-<div class="content-wrapper">
-
 <section class="content-header">
-<div class="container-fluid">
-<h1>Detail Alat</h1>
-</div>
+    <div class="container-fluid">
+        <h1>Detail Alat</h1>
+    </div>
 </section>
 
 <section class="content">
 
-<div class="card">
+    <div class="card-header d-flex justify-content-between">
 
-<div class="card-body">
+        <a href="{{ route('alat.index') }}" class="btn btn-secondary">
+            ← Kembali
+        </a>
 
-<table class="table table-bordered">
+    </div>
+    
+    <div class="card">
 
-<tr>
-<th width="200">Kategori</th>
-<td>{{ $data->kategori->nama_kategori ?? '-' }}</td>
-</tr>
+        <div class="card-body">
 
-<tr>
-<th>Nama Alat</th>
-<td>{{ $data->nama_alat }}</td>
-</tr>
+            <table class="table table-bordered">
 
-<tr>
-<th>Stok</th>
-<td>{{ $data->stok }}</td>
-</tr>
+                <tr>
+                    <th width="200">Kategori</th>
+                    <td>{{ $data->kategori->nama_kategori ?? '-' }}</td>
+                </tr>
 
-<tr>
-<th>Kondisi</th>
-<td>{{ $data->kondisi }}</td>
-</tr>
+                <tr>
+                    <th>Nama Alat</th>
+                    <td>{{ $data->nama_alat }}</td>
+                </tr>
 
-<tr>
-<th>Status</th>
-<td>{{ $data->status }}</td>
-</tr>
+                <tr>
+                    <th>Stok</th>
+                    <td>{{ $data->stok }}</td>
+                </tr>
 
-<tr>
-<th>Foto</th>
+                <tr>
+                    <th>Kondisi</th>
+                    <td>
+                        {{ $data->kondisi->nama_kondisi ?? '-' }}
+                    </td>
+                </tr>
 
-<td>
+                <tr>
+                    <th>Status</th>
+                    <td>{{ $data->status }}</td>
+                </tr>
 
-@if($data->foto)
+                <tr>
+                    <th>Foto</th>
 
-<img src="{{ asset('uploads/alat/' . $data->foto) }}"
-width="150">
+                    <td>
 
-@endif
+                        @if($data->foto)
 
-</td>
+                        <img src="{{ asset('uploads/alat/' . $data->foto) }}"
+                            width="150">
 
-</tr>
+                        @endif
 
-</table>
+                    </td>
 
-</div>
+                </tr>
 
-</div>
+            </table>
+
+        </div>
+
+    </div>
 
 </section>
 
