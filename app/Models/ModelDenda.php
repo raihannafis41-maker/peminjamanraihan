@@ -15,7 +15,9 @@ class ModelDenda extends Model
 
         'pengembalian_id',
         'total_denda',
-        'status_bayar'
+        'metode_pembayaran',
+        'status_bayar',
+        'tanggal_bayar'
 
     ];
 

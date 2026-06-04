@@ -19,11 +19,11 @@ class DendaController extends Controller
     public function index()
     {
         $data = ModelDenda::with(
-                    'pengembalian.peminjaman.user',
-                    'pengembalian.peminjaman.alat'
-                )
-                ->latest()
-                ->get();
+            'pengembalian.peminjaman.user',
+            'pengembalian.peminjaman.alat'
+        )
+            ->latest()
+            ->get();
 
         return view(
             'user.denda.index',
@@ -91,10 +91,10 @@ class DendaController extends Controller
     public function show($id)
     {
         $data = ModelDenda::with(
-                    'pengembalian.peminjaman.user',
-                    'pengembalian.peminjaman.alat'
-                )
-                ->findOrFail($id);
+            'pengembalian.peminjaman.user',
+            'pengembalian.peminjaman.alat'
+        )
+            ->findOrFail($id);
 
         return view(
             'user.denda.show',
@@ -160,6 +160,69 @@ class DendaController extends Controller
             );
     }
 
+    public function bayar(Request $request, $id)
+    {
+        $denda = ModelDenda::findOrFail($id);
+
+        $request->validate([
+
+            'metode_bayar' => 'required'
+
+        ]);
+
+        $bukti = $denda->bukti_bayar;
+
+        if (
+            $request->metode_bayar == 'non_cash'
+            && $request->hasFile('bukti_bayar')
+        ) {
+
+            $bukti =
+                time() . '_' .
+                $request->file('bukti_bayar')
+                ->getClientOriginalName();
+
+            $request->file('bukti_bayar')
+                ->storeAs(
+                    'bukti_denda',
+                    $bukti,
+                    'public'
+                );
+        }
+
+        $denda->update([
+
+            'metode_bayar' => $request->metode_bayar,
+
+            'status_bayar' => 'sudah_bayar',
+
+            'tanggal_bayar' => now(),
+
+            'bukti_bayar' => $bukti
+
+        ]);
+
+        return back()
+            ->with(
+                'success',
+                'Pembayaran denda berhasil'
+            );
+    }
+
+
+    public function verifikasi($id)
+    {
+        $denda = ModelDenda::findOrFail($id);
+
+        $denda->update([
+            'status_bayar' => 'sudah_bayar'
+        ]);
+
+        return back()->with(
+            'success',
+            'Pembayaran berhasil diverifikasi'
+        );
+    }
     /*
     |--------------------------------------------------------------------------
     | DESTROY

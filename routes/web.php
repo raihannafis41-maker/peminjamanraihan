@@ -280,15 +280,36 @@ Route::middleware(['auth', 'role:admin,petugas'])
         );
 
         /*
-        |--------------------------------------------------------------------------
-        | DENDA
-        |--------------------------------------------------------------------------
-        */
+|--------------------------------------------------------------------------
+| DENDA
+|--------------------------------------------------------------------------
+*/
 
         Route::resource(
             'denda',
             DendaController::class
         );
+
+        /*
+|--------------------------------------------------------------------------
+| PEMBAYARAN DENDA
+|--------------------------------------------------------------------------
+*/
+
+        Route::post(
+            '/denda/bayar/{id}',
+            [DendaController::class, 'bayar']
+        )->name('denda.bayar');
+        
+        /*
+        |--------------------------------------------------------------------------
+        | VERIFIKASI 
+        |--------------------------------------------------------------------------
+        */
+        Route::post(
+            '/denda/verifikasi/{id}',
+            [DendaController::class, 'verifikasi']
+        )->name('denda.verifikasi');
 
         /*
         |--------------------------------------------------------------------------
@@ -436,6 +457,44 @@ Route::middleware(['auth', 'role:peminjam'])
             '/kembalikan/{id}',
             [ZonaPeminjamPeminjamanController::class, 'kembalikan']
         )->name('zonapeminjam.kembalikan');
+        /*
+|--------------------------------------------------------------------------
+| DENDA PEMINJAM
+|--------------------------------------------------------------------------
+*/
+
+        Route::get(
+            '/denda',
+            [ZonaRiwayatController::class, 'denda']
+        )->name('zonapeminjam.denda');
+        Route::get(
+            '/zonapeminjam/denda/bayar/{id}',
+            [ZonaRiwayatController::class, 'Pembayaran']
+        )->name('zonapeminjam.denda.bayar');
+
+        Route::post(
+            '/zonapeminjam/denda/bayar/{id}',
+            [ZonaRiwayatController::class, 'prosesPembayaran']
+        )->name('zonapeminjam.denda.proses');
+        Route::get(
+            '/denda/qris/{id}',
+            [ZonaRiwayatController::class, 'qris']
+        )->name('zonapeminjam.qris');
+        Route::post(
+            '/denda/konfirmasi/{id}',
+            [ZonaRiwayatController::class, 'konfirmasiPembayaran']
+        )->name('zonapeminjam.konfirmasiPembayaran');
+
+        /*
+|--------------------------------------------------------------------------
+| SURAT TEGURAN
+|--------------------------------------------------------------------------
+*/
+
+        Route::get(
+            '/suratteguran',
+            [ZonaRiwayatController::class, 'suratTeguran']
+        )->name('zonapeminjam.suratteguran');
     });
 /*
 |--------------------------------------------------------------------------

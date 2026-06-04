@@ -33,10 +33,10 @@
                     <label>Kategori</label>
                     <select name="kategori_id" class="form-control">
                         @foreach($kategori as $item)
-                            <option value="{{ $item->id }}"
-                                {{ $data->kategori_id == $item->id ? 'selected' : '' }}>
-                                {{ $item->nama_kategori }}
-                            </option>
+                        <option value="{{ $item->id }}"
+                            {{ $data->kategori_id == $item->id ? 'selected' : '' }}>
+                            {{ $item->nama_kategori }}
+                        </option>
                         @endforeach
                     </select>
                 </div>
@@ -61,10 +61,10 @@
                     <label>Kondisi</label>
                     <select name="kondisi_id" class="form-control">
                         @foreach($kondisi as $item)
-                            <option value="{{ $item->id }}"
-                                {{ $data->kondisi_id == $item->id ? 'selected' : '' }}>
-                                {{ $item->nama_kondisi }}
-                            </option>
+                        <option value="{{ $item->id }}"
+                            {{ $data->kondisi_id == $item->id ? 'selected' : '' }}>
+                            {{ $item->nama_kondisi }}
+                        </option>
                         @endforeach
                     </select>
                 </div>
@@ -90,9 +90,9 @@
                     <input type="file" name="foto" class="form-control">
 
                     @if($data->foto)
-                        <br>
-                        <img src="{{ asset('uploads/alat/' . $data->foto) }}"
-                            width="120">
+                    <br>
+                    <img src="{{ asset('storage/alat/' . $data->foto) }}"
+                        width="120">
                     @endif
                 </div>
 

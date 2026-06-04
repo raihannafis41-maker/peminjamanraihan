@@ -12,12 +12,6 @@ use App\Models\ModelKondisi;
 
 class AlatController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | INDEX
-    |--------------------------------------------------------------------------
-    */
-
     public function index()
     {
         $data = ModelAlat::with([
@@ -32,12 +26,6 @@ class AlatController extends Controller
             compact('data')
         );
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | CREATE
-    |--------------------------------------------------------------------------
-    */
 
     public function create()
     {
@@ -54,21 +42,14 @@ class AlatController extends Controller
         );
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | STORE
-    |--------------------------------------------------------------------------
-    */
-
     public function store(Request $request)
     {
         $request->validate([
-
             'kategori_id' => 'required',
             'kondisi_id'  => 'required',
             'nama_alat'   => 'required',
             'stok'        => 'required|numeric|min:1',
-
+            'foto'        => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         $foto = null;
@@ -76,11 +57,12 @@ class AlatController extends Controller
         if ($request->hasFile('foto')) {
 
             $foto = time() . '.' .
-                    $request->foto->extension();
+                    $request->file('foto')->getClientOriginalExtension();
 
-            $request->foto->move(
-                public_path('uploads/alat'),
-                $foto
+            $request->file('foto')->storeAs(
+                'alat',
+                $foto,
+                'public'
             );
         }
 
@@ -91,43 +73,22 @@ class AlatController extends Controller
         }
 
         ModelAlat::create([
-
             'kategori_id'   => $request->kategori_id,
-
             'kondisi_id'    => $request->kondisi_id,
-
-            'kode_alat'     => 'ALT-' .
-                                strtoupper(
-                                    Str::random(6)
-                                ),
-
+            'kode_alat'     => 'ALT-' . strtoupper(Str::random(6)),
             'nama_alat'     => $request->nama_alat,
-
             'stok'          => $request->stok,
-
             'stok_tersedia' => $request->stok,
-
             'stok_dipinjam' => 0,
-
             'lokasi'        => $request->lokasi,
-
             'deskripsi'     => $request->deskripsi,
-
             'foto'          => $foto,
-
             'status'        => $stokStatus,
-
         ]);
 
         return redirect('/master/alat')
             ->with('success', 'Data alat berhasil ditambahkan');
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | SHOW
-    |--------------------------------------------------------------------------
-    */
 
     public function show($id)
     {
@@ -142,12 +103,6 @@ class AlatController extends Controller
             compact('data')
         );
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | EDIT
-    |--------------------------------------------------------------------------
-    */
 
     public function edit($id)
     {
@@ -167,21 +122,14 @@ class AlatController extends Controller
         );
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | UPDATE
-    |--------------------------------------------------------------------------
-    */
-
     public function update(Request $request, $id)
     {
         $request->validate([
-
             'kategori_id' => 'required',
             'kondisi_id'  => 'required',
             'nama_alat'   => 'required',
             'stok'        => 'required|numeric|min:1',
-
+            'foto'        => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         $data = ModelAlat::findOrFail($id);
@@ -190,12 +138,28 @@ class AlatController extends Controller
 
         if ($request->hasFile('foto')) {
 
-            $foto = time() . '.' .
-                    $request->foto->extension();
+            if (
+                $data->foto &&
+                file_exists(
+                    storage_path(
+                        'app/public/alat/' . $data->foto
+                    )
+                )
+            ) {
+                unlink(
+                    storage_path(
+                        'app/public/alat/' . $data->foto
+                    )
+                );
+            }
 
-            $request->foto->move(
-                public_path('uploads/alat'),
-                $foto
+            $foto = time() . '.' .
+                    $request->file('foto')->getClientOriginalExtension();
+
+            $request->file('foto')->storeAs(
+                'alat',
+                $foto,
+                'public'
             );
         }
 
@@ -210,50 +174,38 @@ class AlatController extends Controller
         }
 
         $data->update([
-
             'kategori_id'   => $request->kategori_id,
-
             'kondisi_id'    => $request->kondisi_id,
-
             'nama_alat'     => $request->nama_alat,
-
             'stok'          => $request->stok,
-
             'stok_tersedia' => $stokTersedia,
-
             'lokasi'        => $request->lokasi,
-
             'deskripsi'     => $request->deskripsi,
-
             'foto'          => $foto,
-
             'status'        => $status,
-
         ]);
 
         return redirect('/master/alat')
             ->with('success', 'Data alat berhasil diupdate');
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | DESTROY
-    |--------------------------------------------------------------------------
-    */
-
     public function destroy($id)
     {
         $data = ModelAlat::findOrFail($id);
 
-        if ($data->foto) {
-
-            $path = public_path(
-                'uploads/alat/' . $data->foto
+        if (
+            $data->foto &&
+            file_exists(
+                storage_path(
+                    'app/public/alat/' . $data->foto
+                )
+            )
+        ) {
+            unlink(
+                storage_path(
+                    'app/public/alat/' . $data->foto
+                )
             );
-
-            if (file_exists($path)) {
-                unlink($path);
-            }
         }
 
         $data->delete();
