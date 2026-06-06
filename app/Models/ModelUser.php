@@ -12,24 +12,26 @@ class ModelUser extends Authenticatable
     protected $table = 'users';
 
     protected $fillable = [
+
         'nama',
         'username',
         'password',
-        'role'
+        'role',
+        'foto'
+
     ];
 
     protected $hidden = [
-        'password'
-    ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | RELASI
-    |--------------------------------------------------------------------------
-    */
+        'password'
+
+    ];
 
     public function logactivity()
     {
-        return $this->hasMany(ModelLogActivity::class, 'user_id');
+        return $this->hasMany(
+            ModelLogActivity::class,
+            'user_id'
+        );
     }
 }

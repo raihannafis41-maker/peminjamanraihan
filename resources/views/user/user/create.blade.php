@@ -1,167 +1,145 @@
 @extends('layouts.appuser')
 
-@section('title', 'Edit User')
+@section('title', 'Tambah User')
 
 @section('content')
 
+<section class="content-header">
+    <div class="container-fluid">
 
-
-    <section class="content-header">
-        <div class="container-fluid">
+        <div class="d-flex justify-content-between align-items-center">
 
             <h1 class="fw-bold">
-                Edit User
+                Tambah User
             </h1>
 
+            <a href="{{ route('user.index') }}"
+               class="btn btn-secondary">
+
+                <i class="fas fa-arrow-left"></i>
+                Kembali
+
+            </a>
+
         </div>
-    </section>
 
-    <section class="content">
+    </div>
+</section>
 
-        <div class="container-fluid">
+<section class="content">
 
-            <div class="card shadow">
+    <div class="container-fluid">
 
-                <div class="card-body">
+        <div class="card shadow">
 
-                    <form action="{{ route('user.update', $data->id) }}"
-                          method="POST"
-                          enctype="multipart/form-data">
+            <div class="card-body">
 
-                        @csrf
-                        @method('PUT')
+                <form action="{{ route('user.store') }}"
+                      method="POST"
+                      enctype="multipart/form-data">
 
-                        <div class="text-center mb-4">
+                    @csrf
 
-                            @if($data->foto)
+                    <div class="mb-3">
 
-                                <img src="{{ asset('storage/' . $data->foto) }}"
-                                     width="120"
-                                     height="120"
-                                     class="rounded-circle border"
-                                     style="object-fit:cover;">
+                        <label class="form-label">
+                            Nama
+                        </label>
 
-                            @else
+                        <input type="text"
+                               name="nama"
+                               class="form-control"
+                               value="{{ old('nama') }}"
+                               required>
 
-                                <img src="https://ui-avatars.com/api/?name={{ urlencode($data->nama) }}&background=0D8ABC&color=fff"
-                                     width="120"
-                                     height="120"
-                                     class="rounded-circle border">
+                    </div>
 
-                            @endif
+                    <div class="mb-3">
 
-                        </div>
+                        <label class="form-label">
+                            Username
+                        </label>
 
-                        <div class="mb-3">
+                        <input type="text"
+                               name="username"
+                               class="form-control"
+                               value="{{ old('username') }}"
+                               required>
 
-                            <label class="form-label">
-                                Nama
-                            </label>
+                    </div>
 
-                            <input type="text"
-                                   name="nama"
-                                   value="{{ $data->nama }}"
-                                   class="form-control"
-                                   required>
+                    <div class="mb-3">
 
-                        </div>
+                        <label class="form-label">
+                            Password
+                        </label>
 
-                        <div class="mb-3">
+                        <input type="password"
+                               name="password"
+                               class="form-control"
+                               required>
 
-                            <label class="form-label">
-                                Username
-                            </label>
+                    </div>
 
-                            <input type="text"
-                                   name="username"
-                                   value="{{ $data->username }}"
-                                   class="form-control"
-                                   required>
+                    <div class="mb-3">
 
-                        </div>
+                        <label class="form-label">
+                            Role
+                        </label>
 
-                        <div class="mb-3">
+                        <select name="role"
+                                class="form-control"
+                                required>
 
-                            <label class="form-label">
-                                Password Baru
-                            </label>
+                            <option value="">
+                                -- Pilih Role --
+                            </option>
 
-                            <input type="password"
-                                   name="password"
-                                   class="form-control">
+                            <option value="admin">
+                                Admin
+                            </option>
 
-                            <small class="text-muted">
-                                Kosongkan jika tidak ingin mengubah password.
-                            </small>
+                            <option value="petugas">
+                                Petugas
+                            </option>
 
-                        </div>
+                            <option value="peminjam">
+                                Peminjam
+                            </option>
 
-                        <div class="mb-3">
+                        </select>
 
-                            <label class="form-label">
-                                Role
-                            </label>
+                    </div>
 
-                            <select name="role"
-                                    class="form-control">
+                    <div class="mb-3">
 
-                                <option value="admin"
-                                    {{ $data->role == 'admin' ? 'selected' : '' }}>
-                                    Admin
-                                </option>
+                        <label class="form-label">
+                            Foto
+                        </label>
 
-                                <option value="petugas"
-                                    {{ $data->role == 'petugas' ? 'selected' : '' }}>
-                                    Petugas
-                                </option>
+                        <input type="file"
+                               name="foto"
+                               class="form-control"
+                               accept="image/*">
 
-                                <option value="peminjam"
-                                    {{ $data->role == 'peminjam' ? 'selected' : '' }}>
-                                    Peminjam
-                                </option>
+                    </div>
 
-                            </select>
+                    <button type="submit"
+                            class="btn btn-primary">
 
-                        </div>
+                        <i class="fas fa-save"></i>
+                        Simpan
 
-                        <div class="mb-3">
+                    </button>
 
-                            <label class="form-label">
-                                Ganti Foto
-                            </label>
-
-                            <input type="file"
-                                   name="foto"
-                                   class="form-control"
-                                   accept="image/*">
-
-                        </div>
-
-                        <button type="submit"
-                                class="btn btn-warning">
-
-                            <i class="fas fa-save"></i>
-                            Update
-
-                        </button>
-
-                        <a href="{{ route('user.index') }}"
-                           class="btn btn-secondary">
-
-                            Kembali
-
-                        </a>
-
-                    </form>
-
-                </div>
+                </form>
 
             </div>
 
         </div>
 
-    </section>
+    </div>
 
-</div>
+</section>
 
 @endsection

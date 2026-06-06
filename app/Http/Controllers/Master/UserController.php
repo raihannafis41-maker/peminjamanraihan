@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Master;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 use App\Models\ModelUser;
 
@@ -56,8 +57,23 @@ class UserController extends Controller
             'username' => 'required|unique:users,username',
             'password' => 'required|min:5',
             'role'     => 'required',
+            'foto'     => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
 
         ]);
+
+        $foto = null;
+
+        if ($request->hasFile('foto')) {
+
+            $foto = time() . '_' .
+                    $request->foto->getClientOriginalName();
+
+            $request->foto->storeAs(
+                'user',
+                $foto,
+                'public'
+            );
+        }
 
         ModelUser::create([
 
@@ -65,11 +81,15 @@ class UserController extends Controller
             'username' => $request->username,
             'password' => Hash::make($request->password),
             'role'     => $request->role,
+            'foto'     => $foto,
 
         ]);
 
         return redirect('/master/user')
-            ->with('success', 'Data user berhasil ditambahkan');
+            ->with(
+                'success',
+                'Data user berhasil ditambahkan'
+            );
     }
 
     /*
@@ -117,6 +137,7 @@ class UserController extends Controller
             'nama'     => 'required',
             'username' => 'required|unique:users,username,' . $id,
             'role'     => 'required',
+            'foto'     => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
 
         ]);
 
@@ -130,16 +151,43 @@ class UserController extends Controller
 
         ];
 
-        if ($request->password) {
+        if ($request->filled('password')) {
 
             $updateData['password'] =
                 Hash::make($request->password);
         }
 
+        if ($request->hasFile('foto')) {
+
+            if (
+                $data->foto &&
+                Storage::disk('public')
+                    ->exists('user/' . $data->foto)
+            ) {
+
+                Storage::disk('public')
+                    ->delete('user/' . $data->foto);
+            }
+
+            $foto = time() . '_' .
+                    $request->foto->getClientOriginalName();
+
+            $request->foto->storeAs(
+                'user',
+                $foto,
+                'public'
+            );
+
+            $updateData['foto'] = $foto;
+        }
+
         $data->update($updateData);
 
         return redirect('/master/user')
-            ->with('success', 'Data user berhasil diupdate');
+            ->with(
+                'success',
+                'Data user berhasil diupdate'
+            );
     }
 
     /*
@@ -150,9 +198,24 @@ class UserController extends Controller
 
     public function destroy($id)
     {
-        ModelUser::findOrFail($id)->delete();
+        $data = ModelUser::findOrFail($id);
+
+        if (
+            $data->foto &&
+            Storage::disk('public')
+                ->exists('user/' . $data->foto)
+        ) {
+
+            Storage::disk('public')
+                ->delete('user/' . $data->foto);
+        }
+
+        $data->delete();
 
         return back()
-            ->with('success', 'Data user berhasil dihapus');
+            ->with(
+                'success',
+                'Data user berhasil dihapus'
+            );
     }
 }

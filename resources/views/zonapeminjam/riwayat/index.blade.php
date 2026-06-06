@@ -4,7 +4,6 @@
 
 <div class="container py-4">
 
-    {{-- HEADER --}}
     <div class="d-flex justify-content-between align-items-center mb-4">
 
         <h3 class="fw-bold">
@@ -21,29 +20,22 @@
 
     </div>
 
-    {{-- ALERT SUCCESS --}}
     @if(session('success'))
 
         <div class="alert alert-success">
-
             {{ session('success') }}
-
         </div>
 
     @endif
 
-    {{-- ALERT ERROR --}}
     @if(session('error'))
 
         <div class="alert alert-danger">
-
             {{ session('error') }}
-
         </div>
 
     @endif
 
-    {{-- TABEL --}}
     <div class="card shadow-sm border-0">
 
         <div class="card-header bg-dark text-white">
@@ -64,37 +56,23 @@
 
                         <tr>
 
-                            <th width="5%">
-                                No
-                            </th>
+                            <th width="5%">No</th>
 
-                            <th>
-                                Kode Peminjaman
-                            </th>
+                            <th>Foto</th>
 
-                            <th>
-                                Nama Alat
-                            </th>
+                            <th>Kode Peminjaman</th>
 
-                            <th>
-                                Tanggal Pinjam
-                            </th>
+                            <th>Nama Alat</th>
 
-                            <th>
-                                Tanggal Kembali
-                            </th>
+                            <th>Tanggal Pinjam</th>
 
-                            <th>
-                                Jumlah
-                            </th>
+                            <th>Tanggal Kembali</th>
 
-                            <th>
-                                Status
-                            </th>
+                            <th>Jumlah</th>
 
-                            <th width="25%">
-                                Aksi
-                            </th>
+                            <th>Status</th>
+
+                            <th width="25%">Aksi</th>
 
                         </tr>
 
@@ -108,6 +86,25 @@
 
                                 <td>
                                     {{ $loop->iteration }}
+                                </td>
+
+                                <td class="text-center">
+
+                                    @if($item->alat && $item->alat->foto)
+
+                                        <img src="{{ asset('storage/alat/'.$item->alat->foto) }}"
+                                             width="80"
+                                             height="80"
+                                             style="object-fit:cover;border-radius:8px;">
+
+                                    @else
+
+                                        <span class="text-muted">
+                                            No Image
+                                        </span>
+
+                                    @endif
+
                                 </td>
 
                                 <td>
@@ -135,47 +132,36 @@
                                     @switch($item->status)
 
                                         @case('pending')
-
                                             <span class="badge bg-warning">
                                                 Pending
                                             </span>
-
                                         @break
 
                                         @case('approved')
-
                                             <span class="badge bg-success">
                                                 Disetujui
                                             </span>
-
                                         @break
 
                                         @case('dipinjam')
-
                                             <span class="badge bg-primary">
                                                 Sedang Dipinjam
                                             </span>
-
                                         @break
 
                                         @case('dikembalikan')
-
                                             <span class="badge bg-info">
                                                 Dikembalikan
                                             </span>
-
                                         @break
 
                                         @case('rejected')
-
                                             <span class="badge bg-danger">
                                                 Ditolak
                                             </span>
-
                                         @break
 
                                         @default
-
                                             <span class="badge bg-secondary">
                                                 {{ ucfirst($item->status) }}
                                             </span>
@@ -186,7 +172,6 @@
 
                                 <td>
 
-                                    {{-- DETAIL --}}
                                     <a href="{{ route('zonapeminjam.riwayat.show', $item->id) }}"
                                        class="btn btn-info btn-sm">
 
@@ -195,7 +180,6 @@
 
                                     </a>
 
-                                    {{-- KEMBALIKAN BARANG --}}
                                     @if(
                                         $item->status == 'approved' ||
                                         $item->status == 'dipinjam'
@@ -228,11 +212,8 @@
 
                             <tr>
 
-                                <td colspan="8"
-                                    class="text-center">
-
+                                <td colspan="9" class="text-center">
                                     Belum ada riwayat peminjaman.
-
                                 </td>
 
                             </tr>

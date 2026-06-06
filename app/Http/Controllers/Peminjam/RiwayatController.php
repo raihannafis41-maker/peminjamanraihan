@@ -111,7 +111,7 @@ class RiwayatController extends Controller
         $denda = ModelDenda::findOrFail($id);
 
         $denda->update([
-            'metode_bayar' => 'qris',
+            'metode_pembayaran' => 'qris',
             'status_bayar' => 'menunggu_verifikasi',
             'tanggal_bayar' => now(),
         ]);

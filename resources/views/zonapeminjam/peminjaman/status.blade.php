@@ -56,6 +56,8 @@
 
                             <th width="5%">No</th>
 
+                            <th>Foto</th>
+
                             <th>Kode Peminjaman</th>
 
                             <th>Nama Alat</th>
@@ -82,6 +84,27 @@
 
                                 <td>
                                     {{ $loop->iteration }}
+                                </td>
+
+                                {{-- FOTO ALAT --}}
+                                <td class="text-center">
+
+                                    @if($item->alat && $item->alat->foto)
+
+                                        <img src="{{ asset('storage/alat/'.$item->alat->foto) }}"
+                                             alt="{{ $item->alat->nama_alat }}"
+                                             class="img-thumbnail"
+                                             style="width:80px;height:80px;object-fit:cover;">
+
+                                    @else
+
+                                        <img src="https://via.placeholder.com/80x80?text=No+Image"
+                                             alt="Tidak Ada Foto"
+                                             class="img-thumbnail"
+                                             style="width:80px;height:80px;object-fit:cover;">
+
+                                    @endif
+
                                 </td>
 
                                 <td>
@@ -163,7 +186,7 @@
 
                             <tr>
 
-                                <td colspan="8"
+                                <td colspan="9"
                                     class="text-center">
 
                                     Belum ada data peminjaman.

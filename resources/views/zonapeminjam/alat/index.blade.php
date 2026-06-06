@@ -22,8 +22,11 @@
         {{-- Search --}}
         <div class="card shadow-sm mb-4">
             <div class="card-body">
+
                 <form method="GET">
+
                     <div class="input-group">
+
                         <input type="text"
                                name="search"
                                class="form-control"
@@ -31,12 +34,18 @@
                                value="{{ request('search') }}">
 
                         <div class="input-group-append">
+
                             <button class="btn btn-primary">
-                                <i class="fas fa-search"></i> Cari
+                                <i class="fas fa-search"></i>
+                                Cari
                             </button>
+
                         </div>
+
                     </div>
+
                 </form>
+
             </div>
         </div>
 
@@ -48,18 +57,25 @@
 
                 <div class="card shadow border-0 h-100 alat-card">
 
-                    {{-- Gambar --}}
+                    {{-- FOTO ALAT --}}
                     <div class="text-center pt-3">
+
                         @if($item->foto)
-                            <img src="{{ asset('storage/'.$item->foto) }}"
+
+                            <img src="{{ asset('storage/alat/'.$item->foto) }}"
                                  alt="{{ $item->nama_alat }}"
                                  class="img-fluid rounded"
-                                 style="height:180px; object-fit:cover;">
+                                 style="height:180px; width:100%; object-fit:cover;">
+
                         @else
+
                             <img src="https://via.placeholder.com/250x180?text=Foto+Alat"
+                                 alt="No Image"
                                  class="img-fluid rounded"
-                                 style="height:180px; object-fit:cover;">
+                                 style="height:180px; width:100%; object-fit:cover;">
+
                         @endif
+
                     </div>
 
                     <div class="card-body">
@@ -81,37 +97,52 @@
                             <strong>Stok :</strong>
 
                             @if($item->stok > 10)
+
                                 <span class="badge badge-success">
                                     {{ $item->stok }} Unit
                                 </span>
+
                             @elseif($item->stok > 0)
+
                                 <span class="badge badge-warning">
                                     {{ $item->stok }} Unit
                                 </span>
+
                             @else
+
                                 <span class="badge badge-danger">
                                     Habis
                                 </span>
+
                             @endif
+
                         </p>
 
                         <p class="mb-3">
+
                             <i class="fas fa-info-circle"></i>
                             <strong>Status :</strong>
 
                             @if(strtolower($item->status) == 'tersedia')
+
                                 <span class="badge badge-success">
                                     Tersedia
                                 </span>
+
                             @elseif(strtolower($item->status) == 'dipinjam')
+
                                 <span class="badge badge-warning">
                                     Dipinjam
                                 </span>
+
                             @else
+
                                 <span class="badge badge-secondary">
                                     {{ $item->status }}
                                 </span>
+
                             @endif
+
                         </p>
 
                     </div>
@@ -167,7 +198,7 @@
 <style>
 
 .alat-card{
-    transition: all 0.3s ease;
+    transition: all .3s ease;
 }
 
 .alat-card:hover{

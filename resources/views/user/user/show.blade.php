@@ -4,101 +4,109 @@
 
 @section('content')
 
-<div class="content-wrapper">
+<section class="content-header">
+    <div class="container-fluid">
 
-    <section class="content-header">
-        <div class="container-fluid">
+        <div class="d-flex justify-content-between align-items-center">
 
-            <div class="d-flex justify-content-between align-items-center">
+            <h1 class="fw-bold">
+                Detail User
+            </h1>
 
-                <h1 class="fw-bold">
-                    Detail User
-                </h1>
+            <a href="{{ route('user.index') }}"
+               class="btn btn-secondary">
 
-                <a href="{{ route('user.index') }}"
-                   class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i>
+                Kembali
 
-                    <i class="fas fa-arrow-left"></i>
-                    Kembali
-
-                </a>
-
-            </div>
+            </a>
 
         </div>
-    </section>
 
-    <section class="content">
+    </div>
+</section>
 
-        <div class="container-fluid">
+<section class="content">
 
-            <div class="card shadow">
+    <div class="container-fluid">
 
-                <div class="card-body">
+        <div class="card shadow">
 
-                    <div class="text-center mb-4">
+            <div class="card-body">
 
-                        @if($data->foto)
+                <div class="text-center mb-4">
 
-                            <img src="{{ asset('storage/' . $data->foto) }}"
-                                 class="img-circle elevation-2"
-                                 width="150"
-                                 height="150"
-                                 style="object-fit:cover;">
+                    @if($data->foto)
 
-                        @else
+                        <img src="{{ asset('storage/user/'.$data->foto) }}"
+                             class="rounded-circle border"
+                             width="150"
+                             height="150"
+                             style="object-fit:cover;">
 
-                            <img src="https://ui-avatars.com/api/?name={{ urlencode($data->nama) }}&background=0D8ABC&color=fff"
-                                 class="img-circle elevation-2"
-                                 width="150"
-                                 height="150">
+                    @else
 
-                        @endif
+                        <img src="https://ui-avatars.com/api/?name={{ urlencode($data->nama) }}&background=0D8ABC&color=fff"
+                             class="rounded-circle border"
+                             width="150"
+                             height="150">
 
-                    </div>
-
-                    <table class="table table-bordered">
-
-                        <tr>
-                            <th width="250">Nama</th>
-                            <td>{{ $data->nama }}</td>
-                        </tr>
-
-                        <tr>
-                            <th>Username</th>
-                            <td>{{ $data->username }}</td>
-                        </tr>
-
-                        <tr>
-                            <th>Role</th>
-                            <td>
-
-                                @if($data->role == 'admin')
-                                    <span class="badge bg-danger">Admin</span>
-                                @elseif($data->role == 'petugas')
-                                    <span class="badge bg-warning">Petugas</span>
-                                @else
-                                    <span class="badge bg-success">Peminjam</span>
-                                @endif
-
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <th>Dibuat</th>
-                            <td>{{ $data->created_at }}</td>
-                        </tr>
-
-                    </table>
+                    @endif
 
                 </div>
 
+                <table class="table table-bordered">
+
+                    <tr>
+                        <th width="250">Nama</th>
+                        <td>{{ $data->nama }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Username</th>
+                        <td>{{ $data->username }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Role</th>
+                        <td>
+
+                            @if($data->role == 'admin')
+
+                                <span class="badge bg-danger">
+                                    Admin
+                                </span>
+
+                            @elseif($data->role == 'petugas')
+
+                                <span class="badge bg-warning">
+                                    Petugas
+                                </span>
+
+                            @else
+
+                                <span class="badge bg-success">
+                                    Peminjam
+                                </span>
+
+                            @endif
+
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>Dibuat</th>
+                        <td>{{ $data->created_at }}</td>
+                    </tr>
+
+                </table>
+
             </div>
 
         </div>
 
-    </section>
+    </div>
 
-</div>
+</section>
 
 @endsection

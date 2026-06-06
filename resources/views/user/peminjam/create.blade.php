@@ -1,12 +1,12 @@
 @extends('layouts.appuser')
 
-@section('title', 'Edit Peminjam')
+@section('title', 'Tambah Peminjam')
 
 @section('content')
 
 <section class="content-header">
     <div class="container-fluid">
-        <h1 class="fw-bold">Edit Peminjam</h1>
+        <h1 class="fw-bold">Tambah Peminjam</h1>
     </div>
 </section>
 
@@ -18,39 +18,16 @@
 
             <div class="card-body">
 
-                <form action="{{ route('peminjam.update',$data->id) }}"
+                <form action="{{ route('peminjam.store') }}"
                     method="POST"
                     enctype="multipart/form-data">
 
                     @csrf
-                    @method('PUT')
-
-                    <div class="text-center mb-4">
-
-                        @if($data->foto)
-
-                        <img src="{{ asset('storage/peminjam/'.$data->foto) }}"
-                            width="120"
-                            height="120"
-                            class="rounded-circle border"
-                            style="object-fit:cover;">
-
-                        @else
-
-                        <img src="https://ui-avatars.com/api/?name={{ urlencode($data->nama) }}"
-                            width="120"
-                            height="120"
-                            class="rounded-circle border">
-
-                        @endif
-
-                    </div>
 
                     <div class="mb-3">
                         <label>Nama</label>
                         <input type="text"
                             name="nama"
-                            value="{{ $data->nama }}"
                             class="form-control"
                             required>
                     </div>
@@ -59,24 +36,20 @@
                         <label>Username</label>
                         <input type="text"
                             name="username"
-                            value="{{ $data->username }}"
                             class="form-control"
                             required>
                     </div>
 
                     <div class="mb-3">
-                        <label>Password Baru</label>
+                        <label>Password</label>
                         <input type="password"
                             name="password"
-                            class="form-control">
-
-                        <small class="text-muted">
-                            Kosongkan jika tidak ingin mengubah password
-                        </small>
+                            class="form-control"
+                            required>
                     </div>
 
                     <div class="mb-3">
-                        <label>Ganti Foto</label>
+                        <label>Foto</label>
                         <input type="file"
                             name="foto"
                             class="form-control"
@@ -84,9 +57,9 @@
                     </div>
 
                     <button type="submit"
-                        class="btn btn-warning">
+                        class="btn btn-primary">
 
-                        Update
+                        Simpan
 
                     </button>
 

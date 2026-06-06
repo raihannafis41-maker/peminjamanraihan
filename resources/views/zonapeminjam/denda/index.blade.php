@@ -60,16 +60,28 @@
 
                         <td>
 
-                            @if($item->status_bayar == 'sudah_bayar')
+                            @if($item->status_bayar == 'belum_bayar')
 
-                            <span class="badge bg-success">
-                                Sudah Bayar
+                            <span class="badge bg-danger">
+
+                                Belum Bayar
+
+                            </span>
+
+                            @elseif($item->status_bayar == 'menunggu_verifikasi')
+
+                            <span class="badge bg-warning">
+
+                                Menunggu Verifikasi
+
                             </span>
 
                             @else
 
-                            <span class="badge bg-danger">
-                                Belum Bayar
+                            <span class="badge bg-success">
+
+                                Lunas
+
                             </span>
 
                             @endif

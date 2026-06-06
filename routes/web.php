@@ -300,7 +300,7 @@ Route::middleware(['auth', 'role:admin,petugas'])
             '/denda/bayar/{id}',
             [DendaController::class, 'bayar']
         )->name('denda.bayar');
-        
+
         /*
         |--------------------------------------------------------------------------
         | VERIFIKASI 
@@ -468,12 +468,12 @@ Route::middleware(['auth', 'role:peminjam'])
             [ZonaRiwayatController::class, 'denda']
         )->name('zonapeminjam.denda');
         Route::get(
-            '/zonapeminjam/denda/bayar/{id}',
-            [ZonaRiwayatController::class, 'Pembayaran']
+            '/denda/bayar/{id}',
+            [ZonaRiwayatController::class, 'pembayaran']
         )->name('zonapeminjam.denda.bayar');
 
         Route::post(
-            '/zonapeminjam/denda/bayar/{id}',
+            '/denda/bayar/{id}',
             [ZonaRiwayatController::class, 'prosesPembayaran']
         )->name('zonapeminjam.denda.proses');
         Route::get(

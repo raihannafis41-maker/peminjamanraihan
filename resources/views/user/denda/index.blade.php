@@ -7,7 +7,6 @@
 <section class="content-header">
     <div class="container-fluid">
 
-        ```
         <div class="d-flex justify-content-between align-items-center">
 
             <h1>Data Denda</h1>
@@ -15,28 +14,28 @@
             <a href="{{ route('denda.create') }}"
                 class="btn btn-primary">
 
-                <i class="fas fa-plus"></i> Tambah Denda
+                <i class="fas fa-plus"></i>
+                Tambah Denda
 
             </a>
 
         </div>
 
     </div>
-    ```
-
 </section>
 
 <section class="content">
 
-    ```
     <div class="card">
 
         <div class="card-body">
 
             @if(session('success'))
+
             <div class="alert alert-success">
                 {{ session('success') }}
             </div>
+
             @endif
 
             <div class="table-responsive">
@@ -48,22 +47,14 @@
                         <tr>
 
                             <th>No</th>
-
                             <th>Peminjam</th>
-
                             <th>Alat</th>
-
                             <th>Keterlambatan</th>
-
                             <th>Total Denda</th>
-
                             <th>Metode</th>
-
                             <th>Tanggal Bayar</th>
-
                             <th>Status Bayar</th>
-
-                            <th width="220">Aksi</th>
+                            <th width="260">Aksi</th>
 
                         </tr>
 
@@ -94,11 +85,17 @@
                             </td>
 
                             <td>
-                                @if($item->metode_bayar)
-                                {{ strtoupper($item->metode_bayar) }}
+
+                                @if($item->metode_pembayaran)
+
+                                {{ strtoupper($item->metode_pembayaran) }}
+
                                 @else
+
                                 -
+
                                 @endif
+
                             </td>
 
                             <td>
@@ -116,6 +113,7 @@
                             </td>
 
                             <td>
+
                                 @if($item->status_bayar == 'belum_bayar')
 
                                 <span class="badge bg-danger">
@@ -128,7 +126,7 @@
                                     Menunggu Verifikasi
                                 </span>
 
-                                @else
+                                @elseif($item->status_bayar == 'sudah_bayar')
 
                                 <span class="badge bg-success">
                                     Sudah Bayar
@@ -140,17 +138,25 @@
 
                             <td>
 
-                                @if($item->status_bayar == 'belum_bayar')
+                                @if($item->status_bayar == 'menunggu_verifikasi')
 
-                                <button
-                                    type="button"
-                                    class="btn btn-success btn-sm"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#bayar{{ $item->id }}">
+                                <form
+                                    action="{{ route('denda.verifikasi',$item->id) }}"
+                                    method="POST"
+                                    style="display:inline;">
 
-                                    Bayar
+                                    @csrf
 
-                                </button>
+                                    <button
+                                        type="submit"
+                                        class="btn btn-success btn-sm">
+
+                                        <i class="fas fa-check"></i>
+                                        Verifikasi
+
+                                    </button>
+
+                                </form>
 
                                 @endif
 
@@ -168,14 +174,16 @@
 
                                 </a>
 
-                                <form action="{{ route('denda.destroy',$item->id) }}"
+                                <form
+                                    action="{{ route('denda.destroy',$item->id) }}"
                                     method="POST"
                                     style="display:inline;">
 
                                     @csrf
                                     @method('DELETE')
 
-                                    <button type="submit"
+                                    <button
+                                        type="submit"
                                         class="btn btn-danger btn-sm"
                                         onclick="return confirm('Hapus data?')">
 
@@ -189,101 +197,11 @@
 
                         </tr>
 
-                        <!-- MODAL BAYAR -->
-                        <div class="modal fade"
-                            id="bayar{{ $item->id }}"
-                            tabindex="-1">
-
-                            <div class="modal-dialog">
-
-                                <div class="modal-content">
-
-                                    <form action="{{ route('denda.bayar', $item->id) }}"
-                                        method="POST">
-
-                                        @csrf
-
-                                        <div class="modal-header">
-
-                                            <h5 class="modal-title">
-                                                Pembayaran Denda
-                                            </h5>
-
-                                            <button type="button"
-                                                class="btn-close"
-                                                data-bs-dismiss="modal">
-                                            </button>
-
-                                        </div>
-
-                                        <div class="modal-body">
-
-                                            <div class="form-group">
-
-                                                <label>
-                                                    Total Denda
-                                                </label>
-
-                                                <input type="text"
-                                                    class="form-control"
-                                                    value="Rp {{ number_format($item->total_denda,0,',','.') }}"
-                                                    readonly>
-
-                                            </div>
-
-                                            <div class="form-group mt-3">
-
-                                                <label>
-                                                    Metode Pembayaran
-                                                </label>
-
-                                                <select name="metode_bayar"
-                                                    class="form-control"
-                                                    required>
-
-                                                    <option value="">
-                                                        -- Pilih Metode --
-                                                    </option>
-
-                                                    <option value="cash">
-                                                        Cash
-                                                    </option>
-
-                                                    <option value="non_cash">
-                                                        Non Cash
-                                                    </option>
-
-                                                </select>
-
-                                            </div>
-
-                                        </div>
-
-                                        <div class="modal-footer">
-
-                                            <button type="submit"
-                                                class="btn btn-success">
-
-                                                Konfirmasi Pembayaran
-
-                                            </button>
-
-                                        </div>
-
-                                    </form>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
                         @empty
 
                         <tr>
 
-                            <td colspan="9"
-                                class="text-center">
+                            <td colspan="9" class="text-center">
 
                                 Belum ada data denda.
 
@@ -302,7 +220,6 @@
         </div>
 
     </div>
-    ```
 
 </section>
 

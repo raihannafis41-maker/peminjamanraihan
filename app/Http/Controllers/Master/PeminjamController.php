@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Master;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 use App\Models\ModelUser;
 
@@ -19,8 +20,8 @@ class PeminjamController extends Controller
     public function index()
     {
         $data = ModelUser::where('role', 'peminjam')
-                ->latest()
-                ->get();
+            ->latest()
+            ->get();
 
         return view(
             'user.peminjam.index',
@@ -52,8 +53,23 @@ class PeminjamController extends Controller
             'nama'     => 'required',
             'username' => 'required|unique:users,username',
             'password' => 'required|min:5',
+            'foto'     => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
 
         ]);
+
+        $foto = null;
+
+        if ($request->hasFile('foto')) {
+
+            $file = $request->file('foto');
+
+            $foto = time() . '_' . $file->getClientOriginalName();
+
+            $file->storeAs(
+                'public/peminjam',
+                $foto
+            );
+        }
 
         ModelUser::create([
 
@@ -61,11 +77,15 @@ class PeminjamController extends Controller
             'username' => $request->username,
             'password' => Hash::make($request->password),
             'role'     => 'peminjam',
+            'foto'     => $foto,
 
         ]);
 
         return redirect('/master/peminjam')
-            ->with('success', 'Data peminjam berhasil ditambahkan');
+            ->with(
+                'success',
+                'Data peminjam berhasil ditambahkan'
+            );
     }
 
     /*
@@ -112,6 +132,7 @@ class PeminjamController extends Controller
 
             'nama'     => 'required',
             'username' => 'required|unique:users,username,' . $id,
+            'foto'     => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
 
         ]);
 
@@ -124,16 +145,45 @@ class PeminjamController extends Controller
 
         ];
 
-        if ($request->password) {
+        if ($request->filled('password')) {
 
             $updateData['password'] =
                 Hash::make($request->password);
         }
 
+        if ($request->hasFile('foto')) {
+
+            if (
+                $data->foto &&
+                Storage::exists(
+                    'public/peminjam/' . $data->foto
+                )
+            ) {
+
+                Storage::delete(
+                    'public/peminjam/' . $data->foto
+                );
+            }
+
+            $file = $request->file('foto');
+
+            $foto = time() . '_' . $file->getClientOriginalName();
+
+            $file->storeAs(
+                'public/peminjam',
+                $foto
+            );
+
+            $updateData['foto'] = $foto;
+        }
+
         $data->update($updateData);
 
         return redirect('/master/peminjam')
-            ->with('success', 'Data peminjam berhasil diupdate');
+            ->with(
+                'success',
+                'Data peminjam berhasil diupdate'
+            );
     }
 
     /*
@@ -144,9 +194,25 @@ class PeminjamController extends Controller
 
     public function destroy($id)
     {
-        ModelUser::findOrFail($id)->delete();
+        $data = ModelUser::findOrFail($id);
 
-        return back()
-            ->with('success', 'Data peminjam berhasil dihapus');
+        if (
+            $data->foto &&
+            Storage::exists(
+                'public/peminjam/' . $data->foto
+            )
+        ) {
+
+            Storage::delete(
+                'public/peminjam/' . $data->foto
+            );
+        }
+
+        $data->delete();
+
+        return back()->with(
+            'success',
+            'Data peminjam berhasil dihapus'
+        );
     }
 }

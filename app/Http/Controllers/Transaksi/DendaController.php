@@ -192,7 +192,7 @@ class DendaController extends Controller
 
         $denda->update([
 
-            'metode_bayar' => $request->metode_bayar,
+            'metode_pembayar' => $request->metode_bayar,
 
             'status_bayar' => 'sudah_bayar',
 

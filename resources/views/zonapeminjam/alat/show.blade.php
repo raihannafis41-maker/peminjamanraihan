@@ -32,97 +32,152 @@
 
             <div class="card-body">
 
-                <table class="table table-bordered">
+                <div class="row">
 
-                    <tr>
-                        <th width="250">
-                            Nama Alat
-                        </th>
+                    <div class="col-md-4 text-center mb-3">
 
-                        <td>
-                            {{ $data->nama_alat }}
-                        </td>
-                    </tr>
+                        @if($data->foto)
 
-                    <tr>
-                        <th>
-                            Kategori
-                        </th>
+                            <img src="{{ asset('storage/alat/'.$data->foto) }}"
+                                 alt="{{ $data->nama_alat }}"
+                                 class="img-fluid img-thumbnail"
+                                 style="max-height:300px; object-fit:cover;">
 
-                        <td>
-                            {{ $data->kategori->nama_kategori ?? '-' }}
-                        </td>
-                    </tr>
+                        @else
 
-                    <tr>
-                        <th>
-                            Stok
-                        </th>
+                            <img src="https://via.placeholder.com/300x250?text=Foto+Alat"
+                                 alt="Foto Tidak Tersedia"
+                                 class="img-fluid img-thumbnail">
 
-                        <td>
-                            {{ $data->stok }}
-                        </td>
-                    </tr>
+                        @endif
 
-                    <tr>
-                        <th>
-                            Kondisi
-                        </th>
+                    </div>
 
-                        <td>
-                            {{ $data->kondisi }}
-                        </td>
-                    </tr>
+                    <div class="col-md-8">
 
-                    <tr>
-                        <th>
-                            Status
-                        </th>
+                        <table class="table table-bordered">
 
-                        <td>
+                            <tr>
+                                <th width="250">
+                                    Nama Alat
+                                </th>
 
-                            @if($data->status == 'tersedia')
+                                <td>
+                                    {{ $data->nama_alat }}
+                                </td>
+                            </tr>
 
-                                <span class="badge bg-success">
-                                    {{ $data->status }}
-                                </span>
+                            <tr>
+                                <th>
+                                    Kategori
+                                </th>
 
-                            @else
+                                <td>
+                                    {{ $data->kategori->nama_kategori ?? '-' }}
+                                </td>
+                            </tr>
 
-                                <span class="badge bg-danger">
-                                    {{ $data->status }}
-                                </span>
+                            <tr>
+                                <th>
+                                    Stok
+                                </th>
 
-                            @endif
+                                <td>
+                                    {{ $data->stok }}
+                                </td>
+                            </tr>
 
-                        </td>
-                    </tr>
+                            <tr>
+                                <th>
+                                    Stok Tersedia
+                                </th>
 
-                    <tr>
-                        <th>
-                            Foto
-                        </th>
+                                <td>
+                                    {{ $data->stok_tersedia }}
+                                </td>
+                            </tr>
 
-                        <td>
+                            <tr>
+                                <th>
+                                    Sedang Dipinjam
+                                </th>
 
-                            @if($data->foto)
+                                <td>
+                                    {{ $data->stok_dipinjam }}
+                                </td>
+                            </tr>
 
-                                <img src="{{ asset('uploads/alat/' . $data->foto) }}"
-                                     width="200"
-                                     class="img-thumbnail">
+                            <tr>
+                                <th>
+                                    Lokasi
+                                </th>
 
-                            @else
+                                <td>
+                                    {{ $data->lokasi ?? '-' }}
+                                </td>
+                            </tr>
 
-                                <span class="text-muted">
-                                    Foto tidak tersedia
-                                </span>
+                            <tr>
+                                <th>
+                                    Kondisi
+                                </th>
 
-                            @endif
+                                <td>
+                                    {{ $data->kondisi->nama_kondisi ?? '-' }}
+                                </td>
+                            </tr>
 
-                        </td>
-                    </tr>
+                            <tr>
+                                <th>
+                                    Deskripsi
+                                </th>
 
-                </table>
+                                <td>
+                                    {{ $data->deskripsi ?? '-' }}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th>
+                                    Status
+                                </th>
+
+                                <td>
+
+                                    @if($data->status == 'tersedia')
+
+                                        <span class="badge bg-success">
+                                            Tersedia
+                                        </span>
+
+                                    @elseif($data->status == 'dipinjam')
+
+                                        <span class="badge bg-warning text-dark">
+                                            Dipinjam
+                                        </span>
+
+                                    @elseif($data->status == 'habis')
+
+                                        <span class="badge bg-danger">
+                                            Habis
+                                        </span>
+
+                                    @else
+
+                                        <span class="badge bg-secondary">
+                                            {{ ucfirst($data->status) }}
+                                        </span>
+
+                                    @endif
+
+                                </td>
+                            </tr>
+
+                        </table>
+
+                    </div>
+
+                </div>
 
                 <div class="mt-3">
 
@@ -134,7 +189,7 @@
 
                     </a>
 
-                    @if($data->status == 'tersedia')
+                    @if($data->status == 'tersedia' && $data->stok_tersedia > 0)
 
                         <a href="{{ route('zonapeminjam.pinjam', $data->id) }}"
                            class="btn btn-primary">

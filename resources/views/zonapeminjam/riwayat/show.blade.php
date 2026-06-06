@@ -25,14 +25,31 @@
         <div class="card-header bg-dark text-white">
 
             <h4 class="mb-0">
-
                 Informasi Peminjaman
-
             </h4>
 
         </div>
 
         <div class="card-body">
+
+            <div class="text-center mb-4">
+
+                @if($data->alat && $data->alat->foto)
+
+                    <img src="{{ asset('storage/alat/'.$data->alat->foto) }}"
+                         alt="{{ $data->alat->nama_alat }}"
+                         class="img-thumbnail"
+                         style="max-width:250px;">
+
+                @else
+
+                    <span class="text-muted">
+                        Foto tidak tersedia
+                    </span>
+
+                @endif
+
+            </div>
 
             <table class="table table-bordered">
 
@@ -55,7 +72,7 @@
                     </th>
 
                     <td>
-                        {{ $data->kode_peminjaman ?? '-' }}
+                        {{ $data->kode_peminjaman }}
                     </td>
 
                 </tr>
