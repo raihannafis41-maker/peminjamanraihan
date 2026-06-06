@@ -6,6 +6,7 @@
 
 <div class="container py-5">
 
+    <!-- HEADER -->
     <div class="text-center mb-5">
 
         <h2 class="fw-bold">
@@ -18,28 +19,32 @@
 
     </div>
 
-    <div class="row">
+    <div class="row g-4">
 
-        @foreach($kategori as $item)
+        @forelse($kategori as $item)
 
-        <div class="col-md-4 mb-4">
+        <div class="col-md-4">
 
-            <div class="card shadow border-0 h-100">
+            <div class="card shadow-sm border-0 h-100 kategori-card">
 
-                <div class="card-body text-center">
+                <div class="card-body text-center p-4">
 
+                    <!-- ICON -->
                     <i class="fas fa-layer-group fa-3x text-primary mb-3"></i>
 
-                    <h4>
+                    <!-- TITLE -->
+                    <h4 class="fw-bold mb-2">
                         {{ $item->nama_kategori }}
                     </h4>
 
-                    <p class="text-muted">
+                    <!-- DESCRIPTION -->
+                    <p class="text-muted mb-4">
                         {{ $item->deskripsi }}
                     </p>
 
+                    <!-- BUTTON -->
                     <a href="/kategori/{{ $item->id }}"
-                       class="btn btn-primary">
+                       class="btn btn-primary px-4">
                         Lihat Alat
                     </a>
 
@@ -49,10 +54,35 @@
 
         </div>
 
-        @endforeach
+        @empty
+
+        <div class="col-12 text-center py-5">
+
+            <h5 class="text-muted">
+                Tidak ada kategori tersedia
+            </h5>
+
+        </div>
+
+        @endforelse
 
     </div>
 
 </div>
+
+<!-- STYLE TAMBAHAN -->
+<style>
+
+.kategori-card {
+    border-radius: 14px;
+    transition: 0.3s ease;
+}
+
+.kategori-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.15) !important;
+}
+
+</style>
 
 @endsection
